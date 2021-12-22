@@ -1,4 +1,5 @@
 """
+USE PYTHON 3.9 OTHERWISE THE PROGRAM WILL NOT WORK (shoulda used a virtual environment)
 Minewalker is a game where the player aims to cross a field without
 a mine.
 """
