@@ -5,6 +5,7 @@ pragma solidity ^0.8.4;
 - accessed like dictionaries e.g., myMapping[_index]
 - each key/value data is initialised with default values e.g. each bool is false
 - each value can be changed like a dictionary
+- mappings don't have a length
 
 equivalent to (python dictionary):
 {
@@ -13,6 +14,9 @@ equivalent to (python dictionary):
 3: "false", ...}
 */
 
+/**
+mappings are in the form mapping(key_type => value_type) public {name}
+ */
 contract simpleMappingExample {
     //Each int is assigned the default bool (false)
     mapping(uint => bool) public myMapping;

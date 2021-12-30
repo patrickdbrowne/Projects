@@ -1,5 +1,21 @@
 pragma solidity ^0.8;
 
+
+/**
+GAS CONSUMPTION
+deploy as few contracts as possible to reduce gas prices. Gas prices are charged
+for each deployed smart contract.
+
+MAPPING ONTO STRUCTS
+You can map onto structs to hold more data. Access values with [] and variables within structs with . 
+e.g., "mapping(uint => A) public myStructMapping;"
+
+Try to avoid arrays because it is expensive and increases gas price
+
+ENUMS
+*not a lot of detail
+This is another user-defined datatype in solidity: enum ActionChoices {GoLeft, GoRight, GoStraight, SitStill}
+*/
 contract MappingsSctructExample {
     /**
     Structs are a user-defined data type that can store multiple related items. A struct variable is similar to a database record
@@ -7,6 +23,18 @@ contract MappingsSctructExample {
     https://www.geeksforgeeks.org/solidity-enums-and-structs/
 
     Structs are initialised with default values like mappings.
+    You can include structs of other types in struct members, but not of the same type making it discursive. i.e.,
+    struct A {
+        struct B
+        uint number
+    }
+    the above is ok.
+
+    Struct A {
+        struct A
+        uint number
+    }
+    this one is not
     */
     struct Payment {
         //amount of money paid
