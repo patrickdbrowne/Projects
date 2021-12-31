@@ -1,3 +1,8 @@
+# Activate a virtual environment for program to work:
+# cd SpellGame
+# conda activate venv
+# python Spell.py
+
 import tkinter as tk
 from tkinter import font
 import win32com.client as wincl
@@ -60,7 +65,7 @@ class SpellSmart(FuzzyLogic):
         self.instructions.place(anchor="nw", relx=0.025, rely=0.02)
 
         # Sound Button
-        self.sound_image = tk.PhotoImage(file="IST_Project\ProjectV3\SoundButtonFinal2.png")
+        self.sound_image = tk.PhotoImage(file="SoundButtonFinal2.png")
         self.speaker = tk.Button(self.master_frame, relief="flat", bg="#9CE0FF", image=self.sound_image, command=self.sound)
         self.speaker.place(anchor="n", relheight=1/2, relwidth=1/3, relx=0.808333, rely=0.025)
 
@@ -72,7 +77,7 @@ class SpellSmart(FuzzyLogic):
         self.speak = wincl.Dispatch("SAPI.SpVoice")
 
         # Open file and put all words into a list
-        self.open_file = open("IST_Project\ProjectV2\SpellingWord.txt", "r")
+        self.open_file = open("SpellingWord.txt", "r")
         self.list_words = self.open_file.read().split()
         self.open_file.close()
 
@@ -129,7 +134,7 @@ class SpellSmart(FuzzyLogic):
             self.rounds()
             
         except Exception:
-            self.speak.Speak("Please enter a valid integer less than or equal to 20.")
+            self.speak.Speak("Please enter an integer less than or equal to 20.")
 
     def rounds(self, *event): # event is the "<Return>" event pressed or the enter button
         """ This calculates how many rounds the user wants to play and leads onto the next question """
@@ -142,7 +147,7 @@ class SpellSmart(FuzzyLogic):
         if self.input_round >= 5:
             self.full_rotation = self.input_round // 5
             self.random_rotation = self.input_round % 5
-        self.speak.Speak("Would you like to know the spelling of your misspelt words?")
+        self.speak.Speak("Do you want me to spell out your attempts?")
 
     def misspelt(self, *event):
         """ This checks if the user wants the computer to read out their misspelt words """
@@ -160,7 +165,7 @@ class SpellSmart(FuzzyLogic):
         self.input_word.remove(self.input_misspelt())
         self.misspelt_words.destroy()
         self.correct_words.place(anchor="sw", relx=0.175, rely=0.975, relwidth=0.8, relheight=1/3)
-        self.speak.Speak("Would you like to know the correct spelling of your misspelt words?")
+        self.speak.Speak("If you spell a word wrong, do you want me to dictate the correct spelling?")
 
     def correct(self, *event):
         """ This checks if the user wants to correct their misspelt words """
