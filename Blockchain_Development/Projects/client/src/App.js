@@ -68,10 +68,12 @@ class App extends Component {
     //function listens to the SupplyChainStep event for each instance of deployed contract
     this.itemManager.events.SupplyChainStep().on("data", async function(evt){
       console.log(evt);
-      //Create item object
-      let itemObj = await self.itemManager.methods.items(evt.returnValues._itemIndex).call();
-      //inform user their payment was successful
-      alert("Item " + itemObj._identifier + "was paid. Deliver it now!")
+      if (evt.returnValues._step == 1) { 
+        //Create item object
+        let itemObj = await self.itemManager.methods.items(evt.returnValues._itemIndex).call();
+        //inform user their payment was successful
+        alert("Item " + itemObj._identifier + " was paid. Deliver it now!");
+      }
     });
   }
 
@@ -88,7 +90,6 @@ class App extends Component {
   handleSubmit = async() => {
     const {cost, itemName} = this.state;
     //create new item on blockchain
-    console.log("asd")
     let result = await this.itemManager.methods.createItem(itemName, cost).send({from: this.accounts[0]});
     console.log(result);
     //informs user of how much and where to pay for item
