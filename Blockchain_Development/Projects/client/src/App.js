@@ -2,11 +2,30 @@ import React, { Component } from "react";
 import ItemManagerContract from "./contracts/ItemManager.json";
 import ItemContract from "./contracts/Item.json";
 import getWeb3 from "./getWeb3";
+import ReactDOM from "react-dom";
 
 import "./App.css";
 
 class App extends Component {
-  state = { loaded:false, cost:0, itemName:"Example_1" };
+
+  constructor(parent) {
+    super(parent);
+    this.aboutButton = React.createRef();
+    this.howButton = React.createRef();
+    this.contractButton = React.createRef();
+    this.aboutContent = React.createRef();
+    this.howContent = React.createRef();
+    this.contractContent = React.createRef(); 
+    //clears or displays pages corresponding to buttons
+    this.state = {
+      displayContract: "none",
+      displayAbout: "none",
+      displayHow: "none",
+      loaded:false,
+      cost:100,
+      itemName:"Example_1"
+    }
+  }
 
   componentDidMount = async () => {
     try {
@@ -34,6 +53,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
+      this.listenToPaymentEvent();
       this.setState({ loaded:true });
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -43,6 +63,18 @@ class App extends Component {
       console.error(error);
     }
   };
+
+  listenToPaymentEvent = () => {
+    let self = this;
+    //function listens to the SupplyChainStep event for each instance of deployed contract
+    this.itemManager.events.SupplyChainStep().on("data", async function(evt){
+      console.log(evt);
+      //Create item object
+      let itemObj = await self.itemManager.methods.items(evt.returnValues._itemIndex).call();
+      //inform user their payment was successful
+      alert("Item " + itemObj._identifier + "was paid. Deliver it now!")
+    });
+  }
 
   //Notation from React to handle events
   handleInputChange = (event) => {
@@ -57,23 +89,123 @@ class App extends Component {
   handleSubmit = async() => {
     const {cost, itemName} = this.state;
     //create new item on blockchain
-    await this.itemManager.methods.createItem(itemName, cost).send({from: this.accounts[0]});
+    let result = await this.itemManager.methods.createItem(itemName, cost).send({from: this.accounts[0]});
+    console.log(result);
+    //informs user of how much and where to pay for item
+    alert("Please send " + cost + " Wei to " + result.events.SupplyChainStep.returnValues._itemAddress)
+  }
+  
+  //disables buttons when clicked
+  aboutPage = async() => {
+    this.aboutButton.current.disabled = true;
+    this.howButton.current.disabled = false;
+    this.contractButton.current.disabled = false;
+    this.setState({displayContract: "none"});
+    this.setState({displayAbout: "block"});
+    this.setState({displayHow: "none"});
+  }
+  howPage = async() => {
+    this.aboutButton.current.disabled = false;
+    this.howButton.current.disabled = true;
+    this.contractButton.current.disabled = false;
+    this.setState({displayContract: "none"});
+    this.setState({displayAbout: "none"});
+    this.setState({displayHow: "block"});
+  }
+  contractPage = async() => {
+    this.aboutButton.current.disabled = false;
+    this.howButton.current.disabled = false;
+    this.contractButton.current.disabled = true;
+    this.setState({displayContract: "block"});
+    this.setState({displayAbout: "none"});
+    this.setState({displayHow: "none"});
+    
+  //   const [showResults, setShowResults] = React.useState(false)
+  //   const onClick = () => setShowResults(true)
+  //   return (
+  //     <div>
+  //       <input type="submit" value="Search" onClick={onClick} />
+  //       { showResults ? <Results /> : null }
+  //     </div>
+  // )
+    // this.contractContent.current.display = "block";
+    //key 101 corresponds with display (found during debugging on console)
+    //window.getComputedStyle(this.contractContent.current)[101] = "block";
   }
 
 
-
-  render() {
+  render() {    
     if (!this.state.loaded) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-        <h1>Event Trigger / Supply Chain Example</h1>
-        <h2>Items</h2>
-        <h2>Add Items</h2>
-        Cost in Wei: <input type="text" name="cost" value={this.state.cost} onChange={this.handleInputChange} />
-        Item Identifier: <input type="text" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
-        <button type="button" onClick={this.handleSubmit}>Create new Item</button>
+        <button id="About" ref={this.aboutButton} class="navigate" onClick={this.aboutPage}>About Blockchain</button>
+        <button id="How" ref={this.howButton} class="navigate" onClick={this.howPage}>How to use this Smart Contract</button>
+        <button id="Contract" ref={this.contractButton} class="navigate" onClick={this.contractPage}>The Smart Contract</button>
+        
+        <div id="aboutContent" ref={this.aboutContent} style={{display:this.state.displayAbout}}>
+          <br></br>
+          <h1 class="headers">What is Blockchain?</h1>
+          <p1>The term "Blockchain" refers to a decentralised system used to store information. The system is very secure, storing a copy of the database on each 
+            node in the blockchain. This is why ledgers are a common dataset found on the blockchain. There are different networks and blockchains, with Mainnet being
+            the primary public Ethereum production blockchain. This is where actual-value transactions occur.
+          </p1>
+          <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+          <h1 class="headers">What are Smart Contracts?</h1>
+          <p1>
+            It follows that "Smart Contracts" are automated programs built into the blockchain to facilitate, verify, or negotiate a contract agreement. It's typically used
+            to distribute assets between parties once certain conditions are met, so that each person involved in the transaction can be certain of the outcome.
+          </p1>
+
+        </div>
+        <div id="howContent" ref={this.howContent} style={{display:this.state.displayHow}}>
+          <br></br>
+          <h1 class="headers">Requirements</h1>
+          <p1>Ensure you have MetaMask To run the smart contract, you can choose to:<br></br>
+            1. use the "Localhost8454" local network using truffle (refer to the README.txt for instructions);<br></br>
+            2. use a test network, like the Ropsten Test Network or the Goerli Test Network. Find out how to request 
+            ETH <a href="https://blog.logrocket.com/top-4-ethereum-testnets-testing-smart-contracts/">here</a>;<br></br>
+            3. or use Mainnet, which is not recommended since this program is not production ready. <br></br> 
+            Note: Wei is the currency used in the smart contract, which is the smallest unit of ETH. <br></br>1 ETH = 1 &#215; 10<sup>18</sup> Wei.       
+          </p1>
+
+          <br></br><br></br><br></br>
+          <h1 class="headers">Instructions</h1>
+          <p1>
+            This smart contract lets the deployer, or the owner, create items and attach an associated price onto it. If the
+            deployment was successful, you should receive an alert with the amount that needs to be paid for the item, and the 
+            unique address you, or the customer, should send the money to. Once a full payment has been made, you should receive one last 
+            alert informing you that your product can be dispatched for delivery!
+            <br></br><br></br>
+            You can create as many items as your heart desires, and there should be a record of each item in the next page as well...
+          </p1>
+        </div>
+
+        <div id="contractContent" ref={this.contractContent} style={{display:this.state.displayContract}}>
+          <br></br>
+          <h1 id="title">Blockchain Product Creator</h1>
+          <p1>Price of Product (Wei): </p1>
+          <br></br><br></br><br></br>
+          <input type="number" min="0" name="cost" value={this.state.cost} onChange={this.handleInputChange} />
+          <br></br><br></br><br></br>
+          <p1>Name of Product: </p1>
+          <br></br><br></br><br></br>
+          <input type="text" align="left" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
+          <br></br><br></br><br></br><br></br>
+          <button type="button" id="submit" onClick={this.handleSubmit}>Create new Item</button>
+          
+          {/* <br></br><br></br>
+          <p1>Price of Product (Wei): </p1>
+          <br></br>
+          <input type="number" align="left" name="cost" value={this.state.cost} onChange={this.handleInputChange} />
+          <br></br><br></br><br></br>
+          <p1>Name of Product: </p1>
+          <br></br>
+          <input type="text" align="left" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
+          <button type="button" onClick={this.handleSubmit}>Create new Item</button> */}
+        </div>
+       
       </div>
     );
   }

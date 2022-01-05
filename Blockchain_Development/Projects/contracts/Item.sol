@@ -25,5 +25,5 @@ contract Item {
         require(success, "Transaction was insuccessful. Canceling...");
     }
     
-    fallback() external {}
+    fallback() external payable {}
 }
