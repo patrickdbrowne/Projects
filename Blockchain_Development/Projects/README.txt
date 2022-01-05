@@ -3,7 +3,7 @@ Uses Truffle and Solidity to create a Smart Contract that allows owners to creat
 The project acts as a medium for consumers to pay for items in ETH or Wei.
 
 Follow these instructions if you want to run the smart contract using Truffle:
-    1. Download "Projects" as a zip file and extract it.
+    1. Download "Projects/Blockchain_Development/Projects" as a zip file and extract it.
     2. Install MetaMask and create an account.
     3. Install nodejs and truffle.
     4. Open the terminal and move to the directory this application is in.
