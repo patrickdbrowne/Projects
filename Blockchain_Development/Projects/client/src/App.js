@@ -22,7 +22,9 @@ class App extends Component {
       displayHow: "none",
       loaded:false,
       cost:100,
-      itemName:"Example_1"
+      itemName:"Example_1",
+      number: 0,
+      paid: 0,
     }
   }
 
@@ -68,11 +70,12 @@ class App extends Component {
     //function listens to the SupplyChainStep event for each instance of deployed contract
     this.itemManager.events.SupplyChainStep().on("data", async function(evt){
       console.log(evt);
-      if (evt.returnValues._step == 1) { 
+      if (evt.returnValues._step == 1) {
         //Create item object
         let itemObj = await self.itemManager.methods.items(evt.returnValues._itemIndex).call();
         //inform user their payment was successful
         alert("Item " + itemObj._identifier + " was paid. Deliver it now!");
+        self.setState({paid: self.state.paid+1});
       }
     });
   }
@@ -92,8 +95,9 @@ class App extends Component {
     //create new item on blockchain
     let result = await this.itemManager.methods.createItem(itemName, cost).send({from: this.accounts[0]});
     console.log(result);
+    this.setState({number: this.state.number+1});
     //informs user of how much and where to pay for item
-    alert("Please send " + cost + " Wei to " + result.events.SupplyChainStep.returnValues._itemAddress)
+    alert("Please send " + cost + " Wei to " + result.events.SupplyChainStep.returnValues._itemAddress);
   }
   
   //disables buttons when clicked
@@ -120,18 +124,6 @@ class App extends Component {
     this.setState({displayContract: "block"});
     this.setState({displayAbout: "none"});
     this.setState({displayHow: "none"});
-    
-  //   const [showResults, setShowResults] = React.useState(false)
-  //   const onClick = () => setShowResults(true)
-  //   return (
-  //     <div>
-  //       <input type="submit" value="Search" onClick={onClick} />
-  //       { showResults ? <Results /> : null }
-  //     </div>
-  // )
-    // this.contractContent.current.display = "block";
-    //key 101 corresponds with display (found during debugging on console)
-    //window.getComputedStyle(this.contractContent.current)[101] = "block";
   }
 
 
@@ -195,6 +187,10 @@ class App extends Component {
           <input type="text" align="left" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
           <br></br><br></br><br></br><br></br>
           <button type="button" id="submit" onClick={this.handleSubmit}>Create new Item</button>
+          <br></br><br></br><br></br><br></br>
+          <p1>Number of Products Created:{this.state.number}</p1>
+          <br></br><br></br><br></br><br></br>
+          <p1>Number of Products Paid for:{this.state.paid}</p1>
         </div>
        
       </div>
