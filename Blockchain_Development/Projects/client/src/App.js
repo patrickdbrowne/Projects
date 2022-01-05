@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ItemManagerContract from "./contracts/ItemManager.json";
 import ItemContract from "./contracts/Item.json";
 import getWeb3 from "./getWeb3";
-import ReactDOM from "react-dom";
 
 import "./App.css";
 
@@ -89,6 +88,7 @@ class App extends Component {
   handleSubmit = async() => {
     const {cost, itemName} = this.state;
     //create new item on blockchain
+    console.log("asd")
     let result = await this.itemManager.methods.createItem(itemName, cost).send({from: this.accounts[0]});
     console.log(result);
     //informs user of how much and where to pay for item
@@ -194,16 +194,6 @@ class App extends Component {
           <input type="text" align="left" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
           <br></br><br></br><br></br><br></br>
           <button type="button" id="submit" onClick={this.handleSubmit}>Create new Item</button>
-          
-          {/* <br></br><br></br>
-          <p1>Price of Product (Wei): </p1>
-          <br></br>
-          <input type="number" align="left" name="cost" value={this.state.cost} onChange={this.handleInputChange} />
-          <br></br><br></br><br></br>
-          <p1>Name of Product: </p1>
-          <br></br>
-          <input type="text" align="left" name="itemName" value={this.state.itemName} onChange={this.handleInputChange} />
-          <button type="button" onClick={this.handleSubmit}>Create new Item</button> */}
         </div>
        
       </div>

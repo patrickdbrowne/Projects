@@ -67,6 +67,7 @@ p1 {
   color: #A3423C;
 
 }
+
 input {
   width: 50vw;
   position: relative;
@@ -77,6 +78,7 @@ input {
   padding-left: 12px;
   font-size: 30px;
 }
+
 input:focus {
   border: 3px solid #781D42;
 }
@@ -95,10 +97,8 @@ input:focus {
   font-size: 25px;
   cursor: pointer;
   border-radius: 10px;
-
-
-
 }
+
 #submit:hover {
   background-color: #F1FAEE;
   color: #781D42;
