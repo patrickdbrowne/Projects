@@ -38,6 +38,8 @@ nlu:
     - could you tell me the time?
     - can you find a timezone?
     - what time is it?
+    - tell me the time zone
+    - What is the time in Prague
 
 - intent: find_time_zone_for_location
   examples: |
