@@ -11,6 +11,11 @@ intents:
 entities:
   - city
 
+slots:
+  city:
+    type: text
+    auto-fill: True 
+
 responses:
   utter_greet:
   - text: "Hey, I'm ChattyBot! Feel free to stick around for a chat, or information like: time zone, ..."
@@ -22,7 +27,7 @@ responses:
   - text: "Which city's time zone do you want to know about?"
 
   utter_finding_time_zone:
-  - text: "Great! I need a moment to get that for you..."
+  - text: "Great! I need a moment to get the time zone of {city} for you..."
 
   utter_you_are_welcome:
   - text: "No problem!"
