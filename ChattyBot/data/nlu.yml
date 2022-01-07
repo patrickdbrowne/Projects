@@ -39,7 +39,6 @@ nlu:
     - can you find a timezone?
     - what time is it?
     - tell me the time zone
-    - What is the time in Prague
 
 - intent: find_time_zone_for_location
   examples: |
@@ -47,15 +46,9 @@ nlu:
     - time zone of [Lisbon](city)
     - do you know the time zone of [Berlin](city)?
     - i need to know the time zone of [Mumbai](city)
-
-- intent: city_info
-  examples: |
-    - [London](city)
-    - [San Francisco](city)
-    - [Toronto](city)
-    - [New Delhi](city)
-    - [Auckland](city)
-    - [Oslo](city)
+    - What is the time in [Prague](city)
+    - What time zone is [Sydney](city) in?
+    - what time would it be in [San Fransisco](city)
 
 - intent: thanks
   examples: |
