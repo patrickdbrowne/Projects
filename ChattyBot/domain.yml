@@ -8,13 +8,18 @@ intents:
   - city_info
   - thanks
 
+actions:
+  - action_show_time_zone
+
 entities:
   - city
 
 slots:
   city:
     type: text
-    auto-fill: True 
+    mappings:
+    - type: from_entity
+      entity: city
 
 responses:
   utter_greet:
