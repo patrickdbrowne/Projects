@@ -79,3 +79,4 @@ nlu:
     - is it raining in [London](city)?
     - how hot is it in [Moscow](city)?
     - how cold is it in [Dubai](city)?
+    - what is the weather in [America](city)

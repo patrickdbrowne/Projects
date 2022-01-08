@@ -3,6 +3,21 @@ version: "3.0"
 nlu:
 - intent: city_info
   examples: |
+    - [Africa](city)
+    - [America](city)
+    - [Antarctica](city)
+    - [Asia](city)
+    - [Atlantic](city)
+    - [Australia](city)
+    - [Brazil](city)
+    - [Canada](city)
+    - [Chile](city)
+    - [Etc](city)
+    - [Europe](city)
+    - [Indian](city)
+    - [Mexico](city)
+    - [Pacific](city)
+    - [US](city)
     - [Accra](city)
     - [Addis_Ababa](city)
     - [Algiers](city)
