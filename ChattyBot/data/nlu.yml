@@ -57,3 +57,25 @@ nlu:
     - great, thanks
     - thank you
     - thx
+
+- intent: find_weather
+  examples: |
+    - what is the weather like?
+    - can you tell me the weather?
+    - what's the weather
+    - weather
+    - how's the weather?
+    - is it hot?
+    - is it cold?
+    - is it raining?
+
+- intent: find_weather_for_location
+  examples: |
+    - what is the weather like in [Sydney](city)?
+    - weather in [Melbourne](city)
+    - how's the weather in [Paris](city)?
+    - can you tell me the weather in [Prague](city)?
+    - what is [Manchester](city) weather like?
+    - is it raining in [London](city)?
+    - how hot is it in [Moscow](city)?
+    - how cold is it in [Dubai](city)?

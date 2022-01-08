@@ -7,3 +7,20 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
+- rule: Return weather anytime user asks for it
+  steps:
+  - intent: find_weather_for_location
+  - action: utter_finding_weather
+  - action: action_show_weather
+
+- rule: Return time zone anytime user asks for it
+  steps:
+  - intent: find_time_zone_for_location
+  - action: utter_finding_time_zone
+  - action: action_show_time_zone
+
+- rule: a city given indicates the time zone
+  steps:
+  - intent: city_info
+  - action: utter_finding_time_zone
+  - action: action_show_time_zone
