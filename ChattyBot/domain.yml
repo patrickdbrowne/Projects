@@ -9,13 +9,20 @@ intents:
   - thanks
   - find_weather
   - find_weather_for_location
+  - define_word_sentence
+  - find_country_info
+  - challenge_bot
+  - meaning_of_life
 
 actions:
   - action_show_time_zone
   - action_show_weather
+  - action_show_definition
+  - action_find_country_info
 
 entities:
   - city
+  - define_word
 
 slots:
   city:
@@ -23,6 +30,11 @@ slots:
     mappings:
     - type: from_entity
       entity: city
+  define_word:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: define_word
 
 responses:
   utter_greet:
@@ -43,6 +55,18 @@ responses:
   utter_finding_weather:
   - text: "Sure, finding the weather for you..."
 
+  utter_finding_definition:
+  - text: "What a Scholar! Let me find the definition of {define_word} for you..."
+
+  utter_finding_country_info:
+  - text: "Ok! Finding out about {city} for you..."
+
+  utter_challenge_bot:
+  - text: "Oh me?! I'm ChattyBot. Patrick Browne developed me. Acknowledgements:... If you have suggestions, or if you feel like it, you can check out Patty B's GitHub: https://github.com/patrickdbrowne"
+
+  utter_meaning_of_life:
+  - text: "42"
+  
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

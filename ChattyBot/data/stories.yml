@@ -50,3 +50,23 @@ stories:
   - action: action_show_weather
   - intent: thanks
   - action: utter_you_are_welcome
+
+- story: defining a word
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: define_word_sentence
+  - action: utter_finding_definition
+  - action: action_show_definition
+  - intent: thanks
+  - action: utter_you_are_welcome
+
+- story: giving information about a country
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: find_country_info
+  - action: utter_finding_country_info
+  - action: action_find_country_info
+  - intent: thanks
+  - action: utter_you_are_welcome

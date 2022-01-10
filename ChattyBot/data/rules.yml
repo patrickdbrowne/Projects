@@ -24,3 +24,31 @@ rules:
   - intent: city_info
   - action: utter_finding_time_zone
   - action: action_show_time_zone
+
+- rule: Return definition of word when asked
+  steps:
+  - intent: define_word_sentence
+  - action: utter_finding_definition
+  - action: action_show_definition
+
+- rule: Find weather default
+  steps:
+  - intent: find_weather
+  - action: utter_finding_weather
+  - action: action_show_weather
+
+- rule: find country information
+  steps:
+  - intent: find_country_info
+  - action: utter_finding_country_info
+  - action: action_find_country_info
+
+- rule: If the user asks if ChattyBot is a bot
+  steps:
+  - intent: challenge_bot
+  - action: utter_challenge_bot
+
+- rule: meaning of life quote "42"
+  steps:
+  - intent: meaning_of_life
+  - action: utter_meaning_of_life

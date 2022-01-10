@@ -49,6 +49,10 @@ nlu:
     - What is the time in [Prague](city)
     - What time zone is [Sydney](city) in?
     - what time would it be in [San Fransisco](city)
+    - [Perth](city) time
+    - time in [Paris](city)
+    - what time is it in [Melbourne](city)?
+    - do you know the time in [Tokyo](city)?
 
 - intent: thanks
   examples: |
@@ -80,3 +84,53 @@ nlu:
     - how hot is it in [Moscow](city)?
     - how cold is it in [Dubai](city)?
     - what is the weather in [America](city)
+
+- intent: define_word_sentence
+  examples: |
+    - define "[analysis](define_word)"
+    - what does "[approach](define_word)" mean?
+    - what is the meaning of "[context](define_word)"?
+    - please define "[economy](define_word)"
+    - definition of "[agnostic](define_word)"
+    - can you give the definition of "[auspicious](define_word)" please
+    - "[fruition](define_word)"
+    - what is a "[banana](define_word)"
+    - what's the definition of "[inculpable](define_word)"
+
+- intent: find_country_info
+  examples: |
+    - tell me about [Djibouti](city)
+    - what goes on in [Chile](city)
+    - What is [Australia](city) like?
+    - about [Brazil](city)
+    - can you tell me a bit about [India](city)?
+    - what's [Egypt](city) like?
+    - what's happening in [Papua new guinea](city)?
+    - how is [australia](city) like?
+    - can I have information about [Nigeria](city)?
+    - What is [Argentina](city)'s population?
+    - What is [Italy](city)'s currency?
+    - what is [korea](city)'s official name?
+    - how many people live [India](city)?
+    - what continent is [Egypt](city) in?
+    - what's the demonym for the people of [France](city)?
+    - what language is spoken in [Ethiopia](city)?
+    - what's the capital of [Poland](city)?
+    - what area is [Australia](city) in?
+
+- intent: challenge_bot
+  examples: |
+    - Are you a bot?
+    - who made you?
+    - ChattyBot
+    - are you real?
+    - are you powered by google?
+    - github
+    - acknowledgements
+    - who are you?
+
+- intent: meaning_of_life
+  examples: |
+    - what's the meaning of life?
+    - what is the meaning of life?
+    - what is life?
