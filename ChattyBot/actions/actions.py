@@ -339,3 +339,82 @@ class ActionShowCountryInfo(Action):
         except:
             dispatcher.utter_message(text="Sorry! Something/API has gone wrong...")
             return []
+
+class ActionShowCOVIDData(Action):
+    """Returns covid data either globally or for a specific country"""
+    # RECOMMENDED TO SURROUND THE WORD IN QUOTES ("") WHEN TYPING
+    
+    def name(self) -> Text:
+        return "action_find_covid_data"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        place = next(tracker.get_latest_entity_values("city"), None)
+        link = "https://api.covid19api.com/summary"
+        request_COVID = requests.get(link).json()
+
+        # Format the date the data was updated nicely
+        month_dict = {
+            '01':'January',
+            '02':'February',
+            '03':'March',
+            '04':'April',
+            '05':'May',
+            '06':'June',
+            '07':'July',
+            '08':'August',
+            '09':'September',
+            '10':'October',
+            '11':'November',
+            '12':'December'
+            }
+
+        date = request_COVID["Date"]
+        year = date[0:4]
+        month = month_dict[date[5:7]]
+        day = date[8:10]
+
+        # If there was no given entity, bot will assume user wants global data
+        if place == None:
+            global_new_cases = request_COVID["Global"]["NewConfirmed"]
+            global_total_cases = request_COVID["Global"]["TotalConfirmed"]
+            global_total_deaths = request_COVID["Global"]["TotalDeaths"]
+            global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
+
+            dispatcher.utter_message(text="""
+            Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
+            This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
+            return []
+
+        # If user gives an entity, bot will try use it
+        elif place != None:
+            # Keys are not country names, so I need to identify index of country's info
+            list_countries = request_COVID["Countries"]
+            country_index = None
+
+            for index in list_countries:
+                if place.lower() in index["Country"].lower():
+                    country_index = list_countries.index(index)
+                    break
+                else:
+                    continue
+            
+            # If an index for the country was successfully found, bot will give COVID info on it
+            if country_index != None:
+
+                place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
+                place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
+                place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
+                place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
+
+                dispatcher.utter_message(text="""
+                In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
+                This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+                return []
+
+            # In case entity was not a valid value
+            elif country_index == None:
+                dispatcher.utter_message(text="Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
+                return []

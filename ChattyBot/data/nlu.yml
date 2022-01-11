@@ -53,6 +53,7 @@ nlu:
     - time in [Paris](city)
     - what time is it in [Melbourne](city)?
     - do you know the time in [Tokyo](city)?
+    - what's the time in [Ukraine](city)
 
 - intent: thanks
   examples: |
@@ -134,3 +135,21 @@ nlu:
     - what's the meaning of life?
     - what is the meaning of life?
     - what is life?
+
+- intent: find_covid_data
+  examples: |
+    - how many cases are there?
+    - how many people have recovered?
+    - how many cases are there in [Australia](city)?
+    - how many people have recovered from corona in [Korea](city)?
+    - how many people have died from covid in [Canada](city)?
+    - total number of cases in [Russia](city)?
+    - total number of cases
+    - COVID-19 in [Italy](city)
+    - how many people have died from COVID-19?
+    - covid
+    - corona
+    - COVID
+    - coronavirus
+    - rona
+    - how many people have covid in [United States](city)?

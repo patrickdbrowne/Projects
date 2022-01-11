@@ -140,62 +140,62 @@ from requests.api import request
 # else:
 #     print("howdy buddy. We can't find any info on {}".format(place))
 
-# link = "https://api.covid19api.com/summary"
+link = "https://api.covid19api.com/summary"
 
-# request_COVID = requests.get(link).json()
+request_COVID = requests.get(link).json()
 
 # if place == None
-# global_new_cases = request_COVID["Global"]["NewConfirmed"]
-# global_total_cases = request_COVID["Global"]["TotalConfirmed"]
-# global_total_deaths = request_COVID["Global"]["TotalDeaths"]
-# global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
-# month_dict = {
-#     '01':'January',
-#     '02':'February',
-#     '03':'March',
-#     '04':'April',
-#     '05':'May',
-#     '06':'June',
-#     '07':'July',
-#     '08':'August',
-#     '09':'September',
-#     '10':'October',
-#     '11':'November',
-#     '12':'December'
-#     }
+global_new_cases = request_COVID["Global"]["NewConfirmed"]
+global_total_cases = request_COVID["Global"]["TotalConfirmed"]
+global_total_deaths = request_COVID["Global"]["TotalDeaths"]
+global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
+month_dict = {
+    '01':'January',
+    '02':'February',
+    '03':'March',
+    '04':'April',
+    '05':'May',
+    '06':'June',
+    '07':'July',
+    '08':'August',
+    '09':'September',
+    '10':'October',
+    '11':'November',
+    '12':'December'
+    }
 
-# date = request_COVID["Date"]
-# year = date[0:4]
-# month = month_dict[date[5:7]]
-# day = date[8:10]
+date = request_COVID["Date"]
+year = date[0:4]
+month = month_dict[date[5:7]]
+day = date[8:10]
 
 
-# print("""
-# Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
-# This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
+print("""
+Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
+This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
 
 # if place != None
-# place = "united states of america"
+place = "russia"
 # Keys are not country names, so I need to identify index of country's info
-# list_countries = request_COVID["Countries"]
-# country_index = None
+list_countries = request_COVID["Countries"]
+country_index = None
 
-# for index in list_countries:
-#     if place.lower() in index["Country"].lower():
-#         country_index = list_countries.index(index)
-#         break
-#     else:
-#         continue
+for index in list_countries:
+    if place.lower() in index["Country"].lower():
+        country_index = list_countries.index(index)
+        break
+    else:
+        continue
 
-# if country_index != None:
+if country_index != None:
 
-#     print(request_COVID["Countries"][country_index])
-#     place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
-#     place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
-#     place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
-#     place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
-#     print("""
-#     In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
-#     This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
-# elif country_index == None:
-#     print("Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
+    # print(request_COVID["Countries"][country_index])
+    place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
+    place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
+    place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
+    place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
+    print("""
+    In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
+    This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+elif country_index == None:
+    print("Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))

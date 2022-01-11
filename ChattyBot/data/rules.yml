@@ -52,3 +52,9 @@ rules:
   steps:
   - intent: meaning_of_life
   - action: utter_meaning_of_life
+
+- rule: COVID data
+  steps:
+  - intent: find_covid_data
+  - action: utter_find_covid_data
+  - action: action_find_covid_data

@@ -70,3 +70,13 @@ stories:
   - action: action_find_country_info
   - intent: thanks
   - action: utter_you_are_welcome
+
+- story: giving info on COVID
+  steps: 
+  - intent: greet
+  - action: utter_greet
+  - intent: find_covid_data
+  - action: utter_find_covid_data
+  - action: action_find_covid_data
+  - intent: thanks
+  - action: utter_you_are_welcome

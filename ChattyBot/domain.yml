@@ -13,12 +13,14 @@ intents:
   - find_country_info
   - challenge_bot
   - meaning_of_life
+  - find_covid_data
 
 actions:
   - action_show_time_zone
   - action_show_weather
   - action_show_definition
   - action_find_country_info
+  - action_find_covid_data
 
 entities:
   - city
@@ -38,7 +40,7 @@ slots:
 
 responses:
   utter_greet:
-  - text: "Hey, I'm ChattyBot! Feel free to stick around for a chat, or information like: time zone, ..."
+  - text: "Hey, I'm ChattyBot! Feel free to stick around for a chat, or information like: the time and weather in any city, common facts or COVID data about any country, or definition of any word..."
 
   utter_goodbye:
   - text: "Bye"
@@ -66,6 +68,9 @@ responses:
 
   utter_meaning_of_life:
   - text: "42"
+
+  utter_find_covid_data:
+  - text: "Of course! Finding COVID data for you..."
   
 session_config:
   session_expiration_time: 60
