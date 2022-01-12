@@ -1,9 +1,7 @@
-The source code is from the Course "Ethereum Blockchain Developer -- Build Projects in Solidity".
+# What is Blockchain Product Creator?
+Uses Truffle and Solidity to create a Smart Contract that allows owners to create items, set prices, people to pay, and deliver the goods. The project acts as a medium for consumers to pay for items in ETH or Wei.
 
-Uses Truffle and Solidity to create a Smart Contract that allows owners to create items, set prices, people to pay, and deliver the goods. 
-
-The project acts as a medium for consumers to pay for items in ETH or Wei.
-
+# How to run the program
 Follow these instructions if you want to run the smart contract using Truffle:
     1. Download "Projects/Blockchain_Development/Projects" as a zip file and extract it.
     2. Install MetaMask and create an account.
@@ -25,6 +23,7 @@ web3.eth.sendTransaction({to:"0xf74d50b19Ea05Fc7aBB2b24D2906680D218671E5", value
 
 Make sure gas is over 21000 Wei.
 
+# Common solutions if you face a problem
 If you are facing issues running the smart contract, try:
     - going to settings and resetting account;
     - refreshing page;
