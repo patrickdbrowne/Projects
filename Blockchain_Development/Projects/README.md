@@ -30,3 +30,7 @@ If you are facing issues running the smart contract, try:<br></br>
     - changing gas fee to above 21000;<br></br>
     - terminating the console and browser, and trying again;<br></br>
     - changing the test network.
+    
+ # Attribution
+ Please refer to Licence.md
+ The Source-Code is Distributed under the License: “Attribution CC BY 4.0”. A link can be found here: 
