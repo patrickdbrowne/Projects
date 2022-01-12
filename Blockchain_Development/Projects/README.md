@@ -32,5 +32,5 @@ If you are facing issues running the smart contract, try:<br></br>
     - changing the test network.
     
  # Attribution
- Please refer to Licence.md
+ Please refer to LICENCE.md
  The Source-Code is Distributed under the License: “Attribution CC BY 4.0”.
