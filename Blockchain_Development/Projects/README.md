@@ -33,4 +33,4 @@ If you are facing issues running the smart contract, try:<br></br>
     
  # Attribution
  Please refer to Licence.md
- The Source-Code is Distributed under the License: “Attribution CC BY 4.0”. A link can be found here: 
+ The Source-Code is Distributed under the License: “Attribution CC BY 4.0”.
