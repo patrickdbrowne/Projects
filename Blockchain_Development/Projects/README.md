@@ -34,7 +34,8 @@ If you are facing issues running the smart contract, try:<br>
     - refreshing page;<br>
     - changing gas fee to above 21000;<br>
     - terminating the console and browser, and trying again;<br>
-    - changing the test network. You will need to request ETH with a faucet on the same account.
+    - closing the browser and signing into MetaMask again;
+    - changing the test network if you configure the contract to deploy on that network too via truffle_config.js. You will need to request ETH with a faucet on the same account.
     
  # Attribution
  Please refer to LICENCE.md
