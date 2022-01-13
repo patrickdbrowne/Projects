@@ -18,7 +18,7 @@ Follow these instructions if you want to run the smart contract using Truffle:<b
 13. ...And now you can freely play around with the Smart Contract!<br></br>
 
 Note: Each time you create a new item you can: set the gas fees to 0 through MetaMask; pay the gas fees through MetaMask; or make sure to pay OVER 21000 Wei in the node terminal if that's where you choose to pay the address.<br>
-If you want to make a payment to an item address via the Truffle console, type:
+If you want to make a payment to an item address via the Truffle console, type:<br>
 web3.eth.sendTransaction({to:"*address*", value:*amount in wei*, from:*account*, gas:*amount in wei over 21000*});<br>
 For example, <br>
 web3.eth.sendTransaction({to:"0xf74d50b19Ea05Fc7aBB2b24D2906680D218671E5", value:100, from:accounts[1], gas:300000}); <br></br>
