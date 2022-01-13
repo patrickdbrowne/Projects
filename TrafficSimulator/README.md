@@ -1,5 +1,5 @@
 # Traffic Simulator
-
+This is a basic traffic simulator that shows how vehicles interact on a roundabout.<br></br>
 To run the simulation:<br>
 1. Download the files in a zip folder<br>
 2. Extract the folder<br>
