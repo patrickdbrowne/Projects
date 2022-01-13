@@ -171,7 +171,7 @@ class App extends Component {
             unique address you, or the customer, should send the money to. Once a full payment has been made, you should receive one last 
             alert informing you that your product can be dispatched for delivery!
             <br></br><br></br>
-            You can create as many items as your heart desires, and there should be a record of each item in the next page as well...
+            You can create as many items as your heart desires, and there should be a record of each item on the next page as well...
           </p1>
         </div>
 
