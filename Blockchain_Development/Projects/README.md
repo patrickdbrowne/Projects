@@ -28,6 +28,8 @@ web3.eth.sendTransaction({to:"*address*", value:*amount in wei*, from:*account*,
 For example, <br>
 web3.eth.sendTransaction({to:"0xf74d50b19Ea05Fc7aBB2b24D2906680D218671E5", value:100, from:accounts[1], gas:300000}); <br></br>
 
+Read more about using Truffle here: https://trufflesuite.com/docs/truffle/quickstart.html#truffle-quickstart
+
 # Some suggestions if you face a problem
 If you are facing issues running the smart contract, try:<br>
     - going to settings, Advanced and clicking "reset account";<br>
