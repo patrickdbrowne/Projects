@@ -33,23 +33,25 @@ Read more about using Truffle here: https://trufflesuite.com/docs/truffle/quicks
 
 # Some suggestions if you face a problem
 The most common errors arise when deploying the contracts, especially if the contract is on the wrong network or hasn't been deployed at all. Please make sure you have done the following:<br>
-    - installed all the necessary packages. The versions shouldn't affect it, but I am using npm version 8.1.2 and truffle 5.4.26.
-    - go to settings, click "Advanced" and then "reset account". This should restart the nonce (number of transactions so far);<br>
-    - close the webpage, and kill both terminals;
-    - open the command prompt and move to the ".\Projects" directory;<br>
-    - type "truffle develop"; <br>
-    - once the screen has loaded, showing you a list of ten private test keys, type "migrate --reset". This should resolve the issue of the contracts not being deployed by deploying them on the blockchain;<br>
-    - open another terminal and move to the ".\Projects\client" directory;<br>
-    - type "npm start";<br>
-    - make sure MetaMask is connected to "Localhost 8545";<br>
-    - ensure both terminals are running in the background when running the program;<br>
-    - You shouldn't need to change the gas fee when prompted, but pay over the required amount if asked.<br></br>
+- installed all the necessary packages. The versions shouldn't affect it, but I am using npm version 8.1.2 and truffle 5.4.26.
+- go to settings, click "Advanced" and then "reset account". This should restart the nonce (number of transactions so far);<br>
+- close the webpage, and kill both terminals;
+- open the command prompt and move to the ".\Projects" directory;<br>
+- type "truffle develop"; <br>
+- once the screen has loaded, showing you a list of ten private test keys, type "migrate --reset". This should resolve the issue of the contracts not being deployed by deploying them on the blockchain;<br>
+- open another terminal and move to the ".\Projects\client" directory;<br>
+- type "npm start";<br>
+- make sure MetaMask is connected to "Localhost 8545";<br>
+- ensure both terminals are running in the background when running the program;<br>
+- You shouldn't need to change the gas fee when prompted, but pay over the required amount if asked.<br></br>
+
 Other things you could try include: <br>
-    - refreshing page;<br>
-    - changing gas fee to above 21000;<br>
-    - terminating the console and browser, and trying again;<br>
-    - closing the browser and signing into MetaMask again;<br>
-    - changing the test network if you configure the contract to deploy on that network too via truffle_config.js. This requires more work and you will need to request ETH with a faucet on the same account.<br></br>
+- refreshing page;<br>
+- changing gas fee to above 21000;<br>
+- terminating the console and browser, and trying again;<br>
+- closing the browser and signing into MetaMask again;<br>
+- changing the test network if you configure the contract to deploy on that network too via truffle_config.js. This requires more work and you will need to request ETH with a faucet on the same account.<br></br>
+
 You should know if the program works if it alerts you with an address and amount that needs to be paid at that address when you click "Create new Item" with the example given.
     
  # Attribution
