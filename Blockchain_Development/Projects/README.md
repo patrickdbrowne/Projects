@@ -56,4 +56,5 @@ You should know if the program works if it alerts you with an address and amount
     
  # Attribution
  Please refer to LICENCE.md<br>
+ The source code can be found https://www.udemy.com/course/blockchain-developer/ under Section 7.
  The Source-Code is Distributed under the License: “Attribution CC BY 4.0”.
