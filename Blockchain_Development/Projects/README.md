@@ -52,7 +52,7 @@ Other things you could try include: <br>
 - closing the browser and signing into MetaMask again;<br>
 - changing the test network if you configure the contract to deploy on that network too via truffle_config.js. This requires more work and you will need to request ETH with a faucet on the same account.<br></br>
 
-You should know if the program works if it alerts you with an address and amount that needs to be paid at that address when you click "Create new Item" with the example given.
+You should know if the program works if it alerts you with an address and amount that needs to be paid at that address when you click "Create new Item" with the example given. Once the money is paid at the address, you should receive another alert that delivery is ready for that specific item. Object instances should be printed on the console when they go through a new stage.
     
  # Attribution
  Please refer to LICENCE.md<br>
