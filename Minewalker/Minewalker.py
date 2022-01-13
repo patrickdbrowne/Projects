@@ -1,9 +1,8 @@
 """
-USE PYTHON 3.9 OTHERWISE THE PROGRAM WILL NOT WORK (shoulda used a virtual environment)
 Minewalker is a game where the player aims to cross a field without
 a mine.
 """
-import msvcrt, random, os, time, ast
+import msvcrt, random, os, time, ast, sys
 from random import randint
 from termcolor import colored
 
@@ -246,7 +245,7 @@ class Main():
             os.system('cls')
             UI().settings()
         else:
-            self.hScores = open('High_Scores.txt', 'r')
+            self.hScores = open(os.path.join(sys.path[0],'High_Scores.txt'), 'r')
             self.content = ast.literal_eval(self.hScores.read())
             print("Thanks for Playing !!")
             print("Here are the current High Scores:\n")
@@ -301,13 +300,13 @@ class Main():
 
         self.name = input("What is your syndicate name? ")
         # writes list to file if non-existent
-        if not os.path.isfile('High_Scores.txt'):
-            self.hScores = open('High_Scores.txt', 'w')
+        if not os.path.isfile(os.path.join(sys.path[0], 'High_Scores.txt')):
+            self.hScores = open(os.path.join(sys.path[0], 'High_Scores.txt'), 'w')
             self.hScores.write(str(self.base))
             self.hScores.close()
         
         self.score = [self.total_time, self.name]
-        self.hScores = open("High_Scores.txt", "r")
+        self.hScores = open(os.path.join(sys.path[0], 'High_Scores.txt'), 'r')
         self.content = ast.literal_eval(self.hScores.read())
         self.hScores.close()
 
@@ -327,7 +326,7 @@ class Main():
         else:
             self.repeat()
         
-        self.hScores = open("High_Scores.txt", "w")
+        self.hScores = open(os.path.join(sys.path[0], 'High_Scores.txt'), 'w')
         self.hScores.write(str(self.content))
         self.hScores.close()
 
