@@ -16,12 +16,13 @@ Follow these instructions if you want to run the smart contract using Truffle:<b
 11. Allow scripts to run in the URL box if prompted.<br>
 12. Connect the MetaMask to "Localhost 8454".<br>
 13. ...And now you can freely play around with the Smart Contract!<br></br>
-You can pay via MetaMask or Truffle <br></br>
+
 <ins>Deploying the contract</ins>: Each time you create a new item and deploy the contract through MetaMask, you can:<br> 
 - set the gas fees to 0 through MetaMask;<br>
 - pay the gas fees through MetaMask; or<br>
 - make sure to pay OVER 21000 Wei in the node terminal if that's where you choose to pay the address.<br>
 This is where issues most commonly arise. Please look under the "Suggestions" heading for possible fixes.<br></br>
+
 <ins>Paying the address</ins>: You can pay the given address through MetaMask or Truffle. If you want to pay through MetaMask, simply copy and paste the given address and pay in full amount. If you want to make a payment to an item address via the Truffle console, type:<br>
 web3.eth.sendTransaction({to:"*address*", value:*amount in wei*, from:*account*, gas:*amount in wei over 21000*});<br>
 For example, <br>
