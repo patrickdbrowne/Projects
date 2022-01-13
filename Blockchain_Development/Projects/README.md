@@ -30,7 +30,7 @@ web3.eth.sendTransaction({to:"0xf74d50b19Ea05Fc7aBB2b24D2906680D218671E5", value
 
 # Some suggestions if you face a problem
 If you are facing issues running the smart contract, try:<br>
-    - going to settings and resetting account;<br>
+    - going to settings, Advanced and clicking "reset account";<br>
     - refreshing page;<br>
     - changing gas fee to above 21000;<br>
     - terminating the console and browser, and trying again;<br>
