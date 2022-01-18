@@ -59,7 +59,7 @@ class SpellSmart(FuzzyLogic):
 
 
         # Label
-        self.instructions = tk.Message(self.master_frame, fg="white", bg="#9CE0FF", text="Instructions: \nUse the entry box below"
+        self.instructions = tk.Message(self.master_frame, fg="white", bg="#9CE0FF", text="Instructions: \nUse the text box below"
         " to answer the spoken questions and spell the words. Hit the 'start' button to begin. Hit the"
         " speaker button if you want a word repeated.", font=("news gothic", 20), justify="left", aspect=300, padx=0, pady=0)
         self.instructions.place(anchor="nw", relx=0.025, rely=0.02)
