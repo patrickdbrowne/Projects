@@ -60,6 +60,8 @@ class ActionShowTimeZone(Action):
                 
                     # This returns the message displayed on the screen
                     dispatcher.utter_message(text="The time in {} is {}.".format(IANA_options[index], response.json()['time']))
+                    
+                    # assigns a found data to a slot. Not usually necessary. E.g., return [SlotSet("matches", result if result is not None else [])]
                     return []
 
                 # Gives time of place
@@ -286,7 +288,7 @@ class ActionShowDefinition(Action):
 
                 # Prints this if word only has definition
                 if definition and not example:
-                    dispatcher.utter_message(text="""The most common definition of {} is {} I can't seem to find any examples...""".format(word, most_common_definition))
+                    dispatcher.utter_message(text="""The most common definition of {} is {} I can't seem to find any examples of this word being used in a sentence...""".format(word, most_common_definition))
                     return []
         
         except:
@@ -342,7 +344,6 @@ class ActionShowCountryInfo(Action):
 
 class ActionShowCOVIDData(Action):
     """Returns covid data either globally or for a specific country"""
-    # RECOMMENDED TO SURROUND THE WORD IN QUOTES ("") WHEN TYPING
     
     def name(self) -> Text:
         return "action_find_covid_data"
@@ -418,3 +419,45 @@ class ActionShowCOVIDData(Action):
             elif country_index == None:
                 dispatcher.utter_message(text="Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
                 return []
+
+class ActionShowCOVIDData(Action):
+    """Returns covid data either globally or for a specific country"""
+
+    def name(self) -> Text:
+        return "action_find_joke"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
+        category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
+        blackList = "nsfw,religious,political,racist,sexist,explicit"
+
+        # In GUI, if explicit is on, then
+        # blackList = ""
+        # category = [options entered]
+        # --Shows warning that it could be offensive to the audience--
+
+        # Adjusts request if blackList is empty or not
+        if blackList == "":
+            request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
+        elif blackList != "":
+            request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
+
+        # In case API doesn't respond properly
+        if request_jokes.status_code != 200:
+            dispatcher.utter_message(text="Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
+            return []
+        
+        # Adjusts output depending if there is one or two parts to a joke
+        elif request_jokes.json()['type'] == 'twopart':
+            setup = request_jokes.json()['setup']
+            delivery = request_jokes.json()['delivery']
+            dispatcher.utter_message(text="{}\n{}".format(setup, delivery))
+            return []
+
+        elif request_jokes.json()['type'] == 'single':
+            joke = request_jokes.json()['joke']
+            dispatcher.utter_message(text=joke)
+            return []

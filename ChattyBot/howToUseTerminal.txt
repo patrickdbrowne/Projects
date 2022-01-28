@@ -6,3 +6,8 @@
 6. once you've finished, close the shells and type "conda deactivate"
 
 If rasa shell doesn't work, there's probably a typo or something of the likes in domain.
+
+Before running main.py for Tkinter:
+- "Rasa run actions"
+- "Rasa run --enable-api"
+- main.py

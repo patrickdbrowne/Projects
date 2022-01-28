@@ -153,3 +153,13 @@ nlu:
     - coronavirus
     - rona
     - how many people have covid in [United States](city)?
+
+- intent: find_joke
+  examples: |
+    - tell me a joke
+    - tell me something funny
+    - what's a good joke?
+    - can I hear a joke?
+    - joke
+    - funny
+    - what's a humourous joke

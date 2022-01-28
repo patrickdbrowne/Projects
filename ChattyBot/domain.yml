@@ -14,6 +14,7 @@ intents:
   - challenge_bot
   - meaning_of_life
   - find_covid_data
+  - find_joke
 
 actions:
   - action_show_time_zone
@@ -21,6 +22,7 @@ actions:
   - action_show_definition
   - action_find_country_info
   - action_find_covid_data
+  - action_find_joke
 
 entities:
   - city

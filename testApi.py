@@ -1,9 +1,10 @@
 from typing import List
+from urllib import request
 import requests
 import json
 import socket
 
-from requests.api import request
+# from requests.api import request
 
 # TIME ZONE API
 # place = input("which timezone do u want?\n")
@@ -140,62 +141,116 @@ from requests.api import request
 # else:
 #     print("howdy buddy. We can't find any info on {}".format(place))
 
-link = "https://api.covid19api.com/summary"
+# link = "https://api.covid19api.com/summary"
 
-request_COVID = requests.get(link).json()
+# request_COVID = requests.get(link).json()
 
-# if place == None
-global_new_cases = request_COVID["Global"]["NewConfirmed"]
-global_total_cases = request_COVID["Global"]["TotalConfirmed"]
-global_total_deaths = request_COVID["Global"]["TotalDeaths"]
-global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
-month_dict = {
-    '01':'January',
-    '02':'February',
-    '03':'March',
-    '04':'April',
-    '05':'May',
-    '06':'June',
-    '07':'July',
-    '08':'August',
-    '09':'September',
-    '10':'October',
-    '11':'November',
-    '12':'December'
-    }
+# # if place == None
+# global_new_cases = request_COVID["Global"]["NewConfirmed"]
+# global_total_cases = request_COVID["Global"]["TotalConfirmed"]
+# global_total_deaths = request_COVID["Global"]["TotalDeaths"]
+# global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
+# month_dict = {
+#     '01':'January',
+#     '02':'February',
+#     '03':'March',
+#     '04':'April',
+#     '05':'May',
+#     '06':'June',
+#     '07':'July',
+#     '08':'August',
+#     '09':'September',
+#     '10':'October',
+#     '11':'November',
+#     '12':'December'
+#     }
 
-date = request_COVID["Date"]
-year = date[0:4]
-month = month_dict[date[5:7]]
-day = date[8:10]
+# date = request_COVID["Date"]
+# year = date[0:4]
+# month = month_dict[date[5:7]]
+# day = date[8:10]
 
 
-print("""
-Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
-This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
+# print("""
+# Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
+# This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
 
-# if place != None
-place = "russia"
-# Keys are not country names, so I need to identify index of country's info
-list_countries = request_COVID["Countries"]
-country_index = None
+# # if place != None
+# place = "russia"
+# # Keys are not country names, so I need to identify index of country's info
+# list_countries = request_COVID["Countries"]
+# country_index = None
 
-for index in list_countries:
-    if place.lower() in index["Country"].lower():
-        country_index = list_countries.index(index)
-        break
-    else:
-        continue
+# for index in list_countries:
+#     if place.lower() in index["Country"].lower():
+#         country_index = list_countries.index(index)
+#         break
+#     else:
+#         continue
 
-if country_index != None:
+# if country_index != None:
 
-    # print(request_COVID["Countries"][country_index])
-    place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
-    place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
-    place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
-    place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
-    print("""
-    In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
-    This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
-elif country_index == None:
-    print("Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
+#     # print(request_COVID["Countries"][country_index])
+#     place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
+#     place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
+#     place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
+#     place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
+#     print("""
+#     In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
+#     This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+# elif country_index == None:
+#     print("Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
+# import html
+
+# amount = int(input("number of Q's: "))
+
+# link = 'https://opentdb.com/api.php?amount={}&type=boolean'.format(amount)
+# trivia_requests = requests.get(link).json()
+# for question_number in range(amount):
+#     question = html.unescape(trivia_requests['results'][question_number]['question'])
+    
+#     # replaces these letters with " symbol
+#     # letters = "&quot;"
+#     # if letters in question:
+#     #     while letters in question:
+#     #         question = question[question.index(0):question.index(letters)] + "\"" + question[question.index(letters) + 6 :-1]
+        
+#     print(question, "Is this True or False?")
+#     answer = input("").lower()
+#     if answer == trivia_requests['results'][question_number]['correct_answer'].lower():
+#         print("Correct!")
+#     elif answer != trivia_requests['results'][question_number]['correct_answer'].lower():
+#         print("Incorrect!")
+#         print("The statement was {}".format(trivia_requests['results'][question_number]['correct_answer']))
+# print("Thanks for playing!!")
+
+# Defines output to be in a JSON format, rather than XML or JSONP
+# Jokes are sources from https://sv443.net/jokeapi/v2/ posted under the MIT License
+# Some jokes might be offensive
+
+# Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
+category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
+blackList = "nsfw,religious,political,racist,sexist,explicit"
+
+# In GUI, if explicit is on, then
+# blackList = ""
+# category = [options entered]
+# --Shows warning that it could be offensive to the audience--
+
+if blackList == "":
+    request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
+elif blackList != "":
+    request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
+
+# Adjusts output depending if there is one or two parts to a joke
+if request_jokes.status_code != 200:
+    print("Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
+
+elif request_jokes.json()['type'] == 'twopart':
+    setup = request_jokes.json()['setup']
+    delivery = request_jokes.json()['delivery']
+    print("{}\n{}".format(setup, delivery))
+
+elif request_jokes.json()['type'] == 'single':
+    joke = request_jokes.json()['joke']
+    print(joke)

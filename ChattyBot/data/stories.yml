@@ -80,3 +80,10 @@ stories:
   - action: action_find_covid_data
   - intent: thanks
   - action: utter_you_are_welcome
+
+- story: telling a joke
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: find_joke
+  - action: action_find_joke

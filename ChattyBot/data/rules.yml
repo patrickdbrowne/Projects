@@ -58,3 +58,8 @@ rules:
   - intent: find_covid_data
   - action: utter_find_covid_data
   - action: action_find_covid_data
+
+- rule: find joke
+  steps:
+  - intent: find_joke
+  - action: action_find_joke
