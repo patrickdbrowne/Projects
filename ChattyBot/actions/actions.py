@@ -420,7 +420,7 @@ class ActionShowCOVIDData(Action):
                 dispatcher.utter_message(text="Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
                 return []
 
-class ActionShowCOVIDData(Action):
+class ActionShowJoke(Action):
     """Returns covid data either globally or for a specific country"""
 
     def name(self) -> Text:
