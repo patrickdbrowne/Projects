@@ -63,3 +63,8 @@ rules:
   steps:
   - intent: find_joke
   - action: action_find_joke
+
+- rule: Trivia sequence - finds question
+  steps:
+  - intent: find_trivia
+  - action: action_find_trivia

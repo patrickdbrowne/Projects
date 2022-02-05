@@ -3,6 +3,8 @@ from urllib import request
 import requests
 import json
 import socket
+import html
+import random
 
 # from requests.api import request
 
@@ -229,28 +231,74 @@ import socket
 # Some jokes might be offensive
 
 # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
-category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
-blackList = "nsfw,religious,political,racist,sexist,explicit"
+# category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
+# blackList = "nsfw,religious,political,racist,sexist,explicit"
 
-# In GUI, if explicit is on, then
-# blackList = ""
-# category = [options entered]
-# --Shows warning that it could be offensive to the audience--
+# # In GUI, if explicit is on, then
+# # blackList = ""
+# # category = [options entered]
+# # --Shows warning that it could be offensive to the audience--
 
-if blackList == "":
-    request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
-elif blackList != "":
-    request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
+# if blackList == "":
+#     request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
+# elif blackList != "":
+#     request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
 
-# Adjusts output depending if there is one or two parts to a joke
-if request_jokes.status_code != 200:
-    print("Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
+# # Adjusts output depending if there is one or two parts to a joke
+# if request_jokes.status_code != 200:
+#     print("Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
 
-elif request_jokes.json()['type'] == 'twopart':
-    setup = request_jokes.json()['setup']
-    delivery = request_jokes.json()['delivery']
-    print("{}\n{}".format(setup, delivery))
+# elif request_jokes.json()['type'] == 'twopart':
+#     setup = request_jokes.json()['setup']
+#     delivery = request_jokes.json()['delivery']
+#     print("{}\n{}".format(setup, delivery))
 
-elif request_jokes.json()['type'] == 'single':
-    joke = request_jokes.json()['joke']
-    print(joke)
+# elif request_jokes.json()['type'] == 'single':
+#     joke = request_jokes.json()['joke']
+#     print(joke)
+
+# triviaLink = "https://opentdb.com/api.php?amount=1&type=multiple"
+
+# trivia = requests.get(triviaLink).json()
+
+# # First checks for valid JSON return
+# if trivia['response_code'] != 0:
+#     print('Uh oh! Something went wrong with the backend. Why not try again?')
+# else:
+#     typeOfTrivia = trivia['results'][0]['category'].lower()
+#     # This makes the sentence flow nicer for categories with "Entertainment:" in it
+#     if "entertainment" in typeOfTrivia:
+#         typeOfTrivia = typeOfTrivia[15:]
+    
+#     question = html.unescape(trivia['results'][0]['question'])
+#     correctAnswer = trivia['results'][0]['correct_answer']
+#     wrongAnswer1 = trivia['results'][0]['incorrect_answers'][0]
+#     wrongAnswer2 = trivia['results'][0]['incorrect_answers'][1]
+#     wrongAnswer3 = trivia['results'][0]['incorrect_answers'][2]
+
+#     # Assigns the correct and incorrect answers to random options, so there's 
+#     # No pattern for winning.
+#     Answers = [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3]
+#     randomChoices = random.sample(Answers, len(Answers))
+#     randomChoices_dict = {
+#         "A": randomChoices[0],
+#         "B": randomChoices[1],
+#         "C": randomChoices[2],
+#         "D": randomChoices[3]
+#     }
+
+#     print("Here's some {} trivia for you: {}".format(typeOfTrivia, question))
+#     print("""
+# A. {}
+# B. {}
+# C. {}
+# D. {}""".format(randomChoices[0], randomChoices[1], randomChoices[2], randomChoices[3]))
+
+#     userAnswer = input("\nIs your answer A, B, C, or D:\n")
+#     # Detects answer from the letter using dictionary
+#     if randomChoices_dict[userAnswer] == correctAnswer:
+#         print("Correct! You're so smart")
+#     else:
+#         print("Unlucky that's wrong... The correct answer is {}".format(correctAnswer))
+
+print(requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/hello").json())

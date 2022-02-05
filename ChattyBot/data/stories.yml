@@ -87,3 +87,10 @@ stories:
   - action: utter_greet
   - intent: find_joke
   - action: action_find_joke
+
+- story: Full Trivia sequence - find question, stores answer, respond
+  steps:
+  - intent: find_trivia
+  - action: action_find_trivia
+  - intent: user_trivia_response
+  - action: action_check_trivia

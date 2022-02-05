@@ -15,6 +15,8 @@ intents:
   - meaning_of_life
   - find_covid_data
   - find_joke
+  - find_trivia
+  - user_trivia_response
 
 actions:
   - action_show_time_zone
@@ -23,10 +25,13 @@ actions:
   - action_find_country_info
   - action_find_covid_data
   - action_find_joke
+  - action_find_trivia
+  - action_check_trivia
 
 entities:
   - city
   - define_word
+  - user_trivia_response
 
 slots:
   city:
@@ -39,6 +44,11 @@ slots:
     mappings:
     - type: from_entity
       entity: define_word
+  user_trivia_response:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: user_trivia_response
 
 responses:
   utter_greet:

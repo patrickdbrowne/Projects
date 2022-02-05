@@ -163,3 +163,22 @@ nlu:
     - joke
     - funny
     - what's a humourous joke
+  
+- intent: find_trivia
+  examples: | 
+    - trivia
+    - give me a question
+    - random question
+    - trivia night
+    - can you give me trivia?
+
+- intent: user_trivia_response
+  examples: |
+    - [A](user_trivia_response)
+    - [B](user_trivia_response)
+    - [C](user_trivia_response)
+    - [D](user_trivia_response)
+    - [a](user_trivia_response)
+    - [b](user_trivia_response)
+    - [c](user_trivia_response)
+    - [d](user_trivia_response)

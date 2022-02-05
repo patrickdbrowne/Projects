@@ -10,6 +10,8 @@ import requests
 import json
 
 from requests.api import request
+import random
+import html
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -34,6 +36,9 @@ class ActionShowTimeZone(Action):
             #in case user says a continent or country like Australia
             not_city = ["africa", "america", "antarctica", "asia", "atlantic", "australia", "brazil", "canada", "chile", "etc", "europe", "indian", "mexico", "pacific", "us"]
             index = -1
+            if place == None:
+                dispatcher.utter_message(text="Sorry! Can you repeat the city?")
+                return []
 
             #checks the input against each value in the list
             for valid_place in IANA_options:
@@ -254,13 +259,11 @@ class ActionShowDefinition(Action):
 
             # actual word we use for definition
             word = users_word[:end_word]
-            
             request_word = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/{}".format(word))
             
-            # if request_word.status_code != 200:
-            #     dispatcher.utter_message(text="Oh my! It looks like the current dictionary APIs are deprecated...")
-            #     return []
-            
+            if request_word.status_code != 200:
+                dispatcher.utter_message(text="You did not enter a valid word there... or the backend is acting up.")
+                return []
             request_word = request_word.json()
 
             definition = False
@@ -351,74 +354,77 @@ class ActionShowCOVIDData(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        place = next(tracker.get_latest_entity_values("city"), None)
-        link = "https://api.covid19api.com/summary"
-        request_COVID = requests.get(link).json()
+        try:
+            place = next(tracker.get_latest_entity_values("city"), None)
+            link = "https://api.covid19api.com/summary"
+            request_COVID = requests.get(link).json()
 
-        # Format the date the data was updated nicely
-        month_dict = {
-            '01':'January',
-            '02':'February',
-            '03':'March',
-            '04':'April',
-            '05':'May',
-            '06':'June',
-            '07':'July',
-            '08':'August',
-            '09':'September',
-            '10':'October',
-            '11':'November',
-            '12':'December'
-            }
+            # Format the date the data was updated nicely
+            month_dict = {
+                '01':'January',
+                '02':'February',
+                '03':'March',
+                '04':'April',
+                '05':'May',
+                '06':'June',
+                '07':'July',
+                '08':'August',
+                '09':'September',
+                '10':'October',
+                '11':'November',
+                '12':'December'
+                }
 
-        date = request_COVID["Date"]
-        year = date[0:4]
-        month = month_dict[date[5:7]]
-        day = date[8:10]
+            date = request_COVID["Date"]
+            year = date[0:4]
+            month = month_dict[date[5:7]]
+            day = date[8:10]
 
-        # If there was no given entity, bot will assume user wants global data
-        if place == None:
-            global_new_cases = request_COVID["Global"]["NewConfirmed"]
-            global_total_cases = request_COVID["Global"]["TotalConfirmed"]
-            global_total_deaths = request_COVID["Global"]["TotalDeaths"]
-            global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
-
-            dispatcher.utter_message(text="""
-            Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
-            This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
-            return []
-
-        # If user gives an entity, bot will try use it
-        elif place != None:
-            # Keys are not country names, so I need to identify index of country's info
-            list_countries = request_COVID["Countries"]
-            country_index = None
-
-            for index in list_countries:
-                if place.lower() in index["Country"].lower():
-                    country_index = list_countries.index(index)
-                    break
-                else:
-                    continue
-            
-            # If an index for the country was successfully found, bot will give COVID info on it
-            if country_index != None:
-
-                place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
-                place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
-                place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
-                place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
+            # If there was no given entity, bot will assume user wants global data
+            if place == None:
+                global_new_cases = request_COVID["Global"]["NewConfirmed"]
+                global_total_cases = request_COVID["Global"]["TotalConfirmed"]
+                global_total_deaths = request_COVID["Global"]["TotalDeaths"]
+                global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
 
                 dispatcher.utter_message(text="""
-                In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
-                This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+                Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
+                This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
                 return []
 
-            # In case entity was not a valid value
-            elif country_index == None:
-                dispatcher.utter_message(text="Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
-                return []
+            # If user gives an entity, bot will try use it
+            elif place != None:
+                # Keys are not country names, so I need to identify index of country's info
+                list_countries = request_COVID["Countries"]
+                country_index = None
+
+                for index in list_countries:
+                    if place.lower() in index["Country"].lower():
+                        country_index = list_countries.index(index)
+                        break
+                    else:
+                        continue
+                
+                # If an index for the country was successfully found, bot will give COVID info on it
+                if country_index != None:
+
+                    place_new_cases = request_COVID["Countries"][country_index]["NewConfirmed"]
+                    place_total_cases = request_COVID["Countries"][country_index]["TotalConfirmed"]
+                    place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
+                    place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
+
+                    dispatcher.utter_message(text="""
+                    In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
+                    This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+                    return []
+
+                # In case entity was not a valid value
+                elif country_index == None:
+                    dispatcher.utter_message(text="Uh oh! Looks like I can't find any COVID data for {}. Have you checked the spelling?".format(place))
+                    return []
+        except:
+            dispatcher.utter_message(text="Oh no! It looks like something unexpected happened!")
+            return []
 
 class ActionShowJoke(Action):
     """Returns covid data either globally or for a specific country"""
@@ -429,35 +435,118 @@ class ActionShowJoke(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
-        category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
-        blackList = "nsfw,religious,political,racist,sexist,explicit"
+        try: 
+            # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
+            category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
+            blackList = "nsfw,religious,political,racist,sexist,explicit"
 
-        # In GUI, if explicit is on, then
-        # blackList = ""
-        # category = [options entered]
-        # --Shows warning that it could be offensive to the audience--
+            # In GUI, if explicit is on, then
+            # blackList = ""
+            # category = [options entered]
+            # --Shows warning that it could be offensive to the audience--
 
-        # Adjusts request if blackList is empty or not
-        if blackList == "":
-            request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
-        elif blackList != "":
-            request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
+            # Adjusts request if blackList is empty or not
+            if blackList == "":
+                request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
+            elif blackList != "":
+                request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
 
-        # In case API doesn't respond properly
-        if request_jokes.status_code != 200:
-            dispatcher.utter_message(text="Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
+            # In case API doesn't respond properly
+            if request_jokes.status_code != 200:
+                dispatcher.utter_message(text="Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
+                return []
+            
+            # Adjusts output depending if there is one or two parts to a joke
+            elif request_jokes.json()['type'] == 'twopart':
+                setup = request_jokes.json()['setup']
+                delivery = request_jokes.json()['delivery']
+                dispatcher.utter_message(text="{}\n{}".format(setup, delivery))
+                return []
+
+            elif request_jokes.json()['type'] == 'single':
+                joke = request_jokes.json()['joke']
+                dispatcher.utter_message(text=joke)
+                return []
+        except:
+            dispatcher.utter_message(text="Oh no! It looks like something unexpected happened!")
             return []
+
+class ActionShowTrivia(Action):
+    """Returns a trivia Question"""
+    def name(self) -> Text:
+        return "action_find_trivia"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        global randomChoices_dict
+        global correctAnswer
+        triviaLink = "https://opentdb.com/api.php?amount=1&type=multiple"
         
-        # Adjusts output depending if there is one or two parts to a joke
-        elif request_jokes.json()['type'] == 'twopart':
-            setup = request_jokes.json()['setup']
-            delivery = request_jokes.json()['delivery']
-            dispatcher.utter_message(text="{}\n{}".format(setup, delivery))
+        trivia = requests.get(triviaLink).json()
+
+        # First checks for valid JSON return
+        if trivia['response_code'] != 0:
+            dispatcher.utter_message(text='Uh oh! Something went wrong with the backend. Why not try again?')
+        
+        else:
+            typeOfTrivia = trivia['results'][0]['category'].lower()
+            # This makes the sentence flow nicer for categories with "Entertainment:" and "science:" in it
+            if "entertainment" in typeOfTrivia:
+                typeOfTrivia = typeOfTrivia[15:]
+            if "science:" in typeOfTrivia:
+                typeOfTrivia = typeOfTrivia[9:]
+            
+            question = html.unescape(trivia['results'][0]['question'])
+            correctAnswer = html.unescape(trivia['results'][0]['correct_answer'])
+            wrongAnswer1 = html.unescape(trivia['results'][0]['incorrect_answers'][0])
+            wrongAnswer2 = html.unescape(trivia['results'][0]['incorrect_answers'][1])
+            wrongAnswer3 = html.unescape(trivia['results'][0]['incorrect_answers'][2])
+
+            # Assigns the correct and incorrect answers to random options, so there's 
+            # No pattern for winning.
+            Answers = [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3]
+            randomChoices = random.sample(Answers, len(Answers))
+            randomChoices_dict = {
+                "A": randomChoices[0],
+                "B": randomChoices[1],
+                "C": randomChoices[2],
+                "D": randomChoices[3]
+            }
+
+            dispatcher.utter_message(text="""Here's some {} trivia for you: {}
+        A. {}
+        B. {}
+        C. {}
+        D. {}
+        
+Is the answer A, B, C, or D?""".format(typeOfTrivia, question, randomChoices[0], randomChoices[1], randomChoices[2], randomChoices[3]))
             return []
 
-        elif request_jokes.json()['type'] == 'single':
-            joke = request_jokes.json()['joke']
-            dispatcher.utter_message(text=joke)
+class ActionCheckTrivia(Action):
+    """Determines whether user's trivia answer was correct"""
+    def name(self) -> Text:
+        return "action_check_trivia"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        validTriviaResponses = ["A", "B", "C", "D", "a", "b", "c", "d"]
+        # Determines whether the input is valid (i.e., not ""). DELETE THE FOLLOWING 3 LINES OF CODE WHEN YOU PUT THIS FEATURE IN GUI (no entering "")
+        if tracker.get_slot("user_trivia_response") == None:
+            dispatcher.utter_message(text="Looks like you didn't enter anything. The correct answer is {}".format(correctAnswer))
+            return []
+
+        # Checks whether data was a valid letter to answer
+        elif tracker.get_slot("user_trivia_response") not in validTriviaResponses:
+            dispatcher.utter_message(text="What's that?? Enter 'A', 'B', 'C', or 'D' as one of your answers next time!".format(correctAnswer))
+            return []
+
+        # Detects answer from user_trivia_response slot and uses dictionary to compare answers
+        elif randomChoices_dict[tracker.get_slot("user_trivia_response").upper()] == correctAnswer:
+            dispatcher.utter_message(text="Correct! You're so smart")
+            return []
+        else:
+            dispatcher.utter_message(text="Unlucky that's wrong... The correct answer is {}".format(correctAnswer))
             return []
