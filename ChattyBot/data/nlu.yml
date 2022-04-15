@@ -182,3 +182,19 @@ nlu:
     - [b](user_trivia_response)
     - [c](user_trivia_response)
     - [d](user_trivia_response)
+  
+- intent: music_artist_link
+  examples: |
+    - [https://open.spotify.com/artist/0k17h0D3J5VfsdmQ1iZtE9?si=SHZTrr_oS--JM1ptNmErCA](artist)
+    - artist link: [https://open.spotify.com/artist/74ASZWbe4lXaubB36ztrGX?si=Yehp9FHVROS2BF4fPZwQBQ](artist)
+    - link [https://open.spotify.com/artist/2DaxqgrOhkeH0fpeiQq2f4?si=1MeHEgGvSZmP1G7q6A_Xqg](artist)
+    - spotify [https://open.spotify.com/artist/22bE4uQ6baNwSHPVcDxLCe?si=EHLw-5n8TcSwXwM8Zp9tTQ](artist)
+  
+- intent: search_music
+  examples: |
+    - play [time](song)
+    - Play some [Pigs (three different ones)](song)
+    - can you play [Hurricane](song)?
+    - search for [Don't Look Back in Anger - Remastered](song)
+    - search [Stand by Me](song)
+    - music [Stop Crying your Heart Out](song)

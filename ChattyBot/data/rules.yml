@@ -68,3 +68,13 @@ rules:
   steps:
   - intent: find_trivia
   - action: action_find_trivia
+
+- rule: Music metadata
+  steps:
+  - intent: music_artist_link
+  - action: action_music_metadata
+
+- rule: playing music
+  steps:
+  - intent: search_music
+  - action: action_search_song

@@ -16,6 +16,9 @@ import html
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+import spotipy
+import webbrowser
+
 class ActionShowTimeZone(Action):
     """Returns the time in another place"""
 
@@ -331,11 +334,7 @@ class ActionShowCountryInfo(Action):
 
 
                 dispatcher.utter_message(text="""
-                {}, or officially known as {}, is in the region {} and in the continent {}.
-                {}'s currency is the {} ({} {}). Not only that, but did you know there are {} {}s living there at the moment?! 
-                Additionally, {}'s Capital is {} with the main language being {}.
-                And even though we can't travel there because of COVID, what's stopping us from digitally visiting there with google? {}.
-                """.format(place, official_name, area, continent, place, currency['name'], currency['symbol'], list(request_country[0]['currencies'].keys())[0], population, demonym, place, capital, main_language, location_link))
+{}, or officially known as {}, is in the region {} and in the continent {}. {}'s currency is the {} ({} {}). Not only that, but did you know there are {} {}s living there at the moment?! Additionally, {}'s Capital is {} with the main language being {}. And even though we can't travel there because of COVID, what's stopping us from digitally visiting there with google? {}.                """.format(place, official_name, area, continent, place, currency['name'], currency['symbol'], list(request_country[0]['currencies'].keys())[0], population, demonym, place, capital, main_language, location_link))
                 return []
 
             else:
@@ -387,9 +386,7 @@ class ActionShowCOVIDData(Action):
                 global_total_deaths = request_COVID["Global"]["TotalDeaths"]
                 global_total_recoveries = request_COVID["Global"]["TotalRecovered"]
 
-                dispatcher.utter_message(text="""
-                Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world.
-                This data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
+                dispatcher.utter_message(text="""Today, there were {} confirmed cases globally! In total, there are {} cases, {} deaths, and {} recoveries in the world. \nThis data was last updated on {} {}, {}.""".format(global_new_cases, global_total_cases, global_total_deaths, global_total_recoveries, day, month, year))
                 return []
 
             # If user gives an entity, bot will try use it
@@ -413,9 +410,7 @@ class ActionShowCOVIDData(Action):
                     place_total_deaths = request_COVID["Countries"][country_index]["TotalDeaths"]
                     place_total_recoveries = request_COVID["Countries"][country_index]["TotalRecovered"]
 
-                    dispatcher.utter_message(text="""
-                    In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}.
-                    This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
+                    dispatcher.utter_message(text="""In {}, there were {} cases today! So far, there are {} cases, {} deaths, and {} recoveries in {}. This data was last updated on {} {}, {}""".format(place, place_new_cases, place_total_cases, place_total_deaths, place_total_recoveries, place, day, month, year))
                     return []
 
                 # In case entity was not a valid value
@@ -515,10 +510,10 @@ class ActionShowTrivia(Action):
             }
 
             dispatcher.utter_message(text="""Here's some {} trivia for you: {}
-        A. {}
-        B. {}
-        C. {}
-        D. {}
+A. {}
+B. {}
+C. {}
+D. {}
         
 Is the answer A, B, C, or D?""".format(typeOfTrivia, question, randomChoices[0], randomChoices[1], randomChoices[2], randomChoices[3]))
             return []
@@ -550,3 +545,138 @@ class ActionCheckTrivia(Action):
         else:
             dispatcher.utter_message(text="Unlucky that's wrong... The correct answer is {}".format(correctAnswer))
             return []
+
+class ActionMusicMetadata(Action):
+    """Simply returns artist album data"""
+    def name(self) -> Text:
+        return "action_music_metadata"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # My spotify credentials for this project
+        CLIENT_ID = '3f4f8323f25d456c843cd66d1bf7b691'
+        CLIENT_SECRET = '232ec99a73b1453aa66487bec3bad0a5'
+
+        AUTH_URL = 'https://accounts.spotify.com/api/token'
+
+        # Post the details to get an access token so we can use various endpoints later on
+        auth_response = requests.post(AUTH_URL, {
+            'grant_type': 'client_credentials',
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET,
+        })
+
+        # convert the response to JSON
+        auth_response_data = auth_response.json()
+
+        # save the access token - this is what is used for get requests
+        access_token = auth_response_data['access_token']
+
+        headers = {
+            # American spelling...
+            "Authorization": "Bearer {}".format(access_token)
+        }
+        params = {
+            "include_groups": "album",
+            "limit": 50
+        }
+
+        # base URL of all Spotify API endpoints
+        BASE_URL = 'https://api.spotify.com/v1/'
+        # Track ID from the URI. user just needs to copy and paste the "copy artist link" and 
+        # program does the rest
+        # artist ID from the URI - end bit of copy and pasting track ID from spotify. put in instructions to change...
+        artist_id = next(tracker.get_latest_entity_values("artist"), None)
+        start_URI = 32
+        end_URI = 54
+        artist_id = artist_id[start_URI:end_URI]
+
+        # format to request album data of artist - only albums no single songs, max 50 albums
+        artist_data = requests.get("{}artists/{}".format(BASE_URL, artist_id), headers=headers).json()
+
+        album_data = requests.get("{}artists/{}/albums".format(BASE_URL, artist_id), headers=headers, params=params).json()
+        # print(album_data)
+
+        name = artist_data['name']
+        genre = artist_data['genres'][0]
+        if name.lower() in ["pink floyd", "nirvana", "oasis", "arctic monkeys", "the beatles", "twenty one pilots", "bob dylan", "the rolling stones", "genesis", "cream", "eric clapton"]:
+            dispatcher.utter_message(text="{} is known for its {} music. This is one of my personal favourites! Here are some albums you may want to check out:".format(name, genre))
+        else:
+            dispatcher.utter_message(text="{} is known for its {} music! Here are some of their snazzy albums:".format(name, genre))
+            
+        # format to request album data of artist - only albums no single songs, max 50 albums
+        # r = requests.get(BASE_URL + 'artists/' + artist_id + '/albums', headers=headers, params=params)
+        # d = r.json()
+
+        # Prevents duplicate albums from appearing
+        albums = [] # to keep track of duplicates
+
+        # loop over albums and get all tracks
+        output = ""
+        for album in album_data['items']:
+            album_name = album['name']
+
+            # This skips over albums already covered
+            trim_name = album_name.split('(')[0].strip()
+            if trim_name.upper() in albums or int(album['release_date'][:4]) > 1983:
+                continue
+            albums.append(trim_name.upper()) # use upper() to standardize
+            
+            output += "\n{}".format(album_name)
+        dispatcher.utter_message(text=output)
+        return []
+
+class ActionSearchSong(Action):
+    """searches for song in browser"""
+    def name(self) -> Text:
+        return "action_search_song"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Private information - use environment variables
+        clientID = '3f4f8323f25d456c843cd66d1bf7b691'
+        clientSecret = '232ec99a73b1453aa66487bec3bad0a5'
+        redirectURI = 'http://google.com/'
+
+        # Create OAuth Object
+        oauth_object = spotipy.SpotifyOAuth(clientID,clientSecret,redirectURI)
+
+        # Create token
+        token_dict = oauth_object.get_access_token()
+        token = token_dict['access_token']
+
+        # Create Spotify Object
+        spotifyObject = spotipy.Spotify(auth=token)
+
+        user = spotifyObject.current_user()
+        # To print the response in readable format.
+        display_name = user["display_name"]
+        username = user["id"]
+        dispatcher.utter_message(text="You are signed in as {} with the username {}".format(display_name, username))
+
+        # Get the Song Name from data
+        song_name = tracker.get_latest_entity_values("song")
+        searchQuery = next(song_name, None)
+        # Search for the Song.
+        searchResults = spotifyObject.search(searchQuery,1,0,"track")
+        # Get required data from JSON response.
+        tracks_dict = searchResults['tracks']
+        tracks_items = tracks_dict['items']
+        song = tracks_items[0]['external_urls']['spotify']
+        # print(json.dumps(tracks_dict, sort_keys=True, indent=4))
+        track_name = tracks_dict["items"][0]["name"]
+        artist_name = tracks_dict["items"][0]["artists"][0]["name"]
+
+        # Open the Song in Web Browser
+        webbrowser.open(song)
+        # Returns the song name and artist - taking into account the grammar rule for words ending in "s" and its plural
+        if artist_name[-1] == "s":
+            dispatcher.utter_message(text="How's {}' {}? Are you vibin' to it?".format(artist_name, track_name))
+        elif artist_name[-1] != "s":
+            dispatcher.utter_message(text="How's {}'s {}? Are you vibin' to it?".format(artist_name, track_name))
+        return []
+        

@@ -2,6 +2,8 @@ from tkinter import *
 from urllib import response
 import requests
 import ast
+import subprocess
+import os
 
 BG_GREY = "#ABB289"
 BG_COLOUR = "#17202A"
@@ -13,10 +15,21 @@ FONT_BOLD = "Helvetica 13 bold"
 class ChattyBot:
 
     def __init__(self):
+
         self.window = Tk()
 
         #creates layout of window widget
         self._setup_main_window()
+        # Runs virtual environment and runs NLU server. subprocess.run waits for it to finish. ";" indicates multiple commands
+        NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
+        actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
+        # subprocess.run(['NLU_server'], stdout=subprocess.PIPE, input='rasa run --enable-api')
+        # # Runs actions server
+        # subprocess.run(['Actions_server'], stdout=subprocess.PIPE, text=True, input='conda activate env', shell=True)
+        # subprocess.run(['Actions_server'], stdout=subprocess.PIPE, text=True, input='cd actions', shell=True)
+        # subprocess.run(['Actions_server'], stdout=subprocess.PIPE, text=True, input='rasa run actions', shell=True)
+
+        # Runs virtual environment and actions server
 
         # NLU server
         self.url = "http://localhost:5005/webhooks/rest/webhook"
@@ -25,7 +38,7 @@ class ChattyBot:
         """Runs application"""
 
         self.window.mainloop()
-    
+
     def _setup_main_window(self):
         """Configures root window"""
 

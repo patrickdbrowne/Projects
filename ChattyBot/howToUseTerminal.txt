@@ -11,3 +11,8 @@ Before running main.py for Tkinter:
 - "Rasa run actions"
 - "Rasa run --enable-api"
 - main.py
+
+
+===========NEW-VERSION==============
+Create a virtual environment with all the requirements
+run "main.py" in the virtual environnment in the "ChattyBot" directory
