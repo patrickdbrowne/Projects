@@ -4,6 +4,7 @@ import requests
 import ast
 import subprocess
 import os
+from tkinter import messagebox
 
 BG_GREY = "#ABB289"
 BG_COLOUR = "#17202A"
@@ -12,17 +13,51 @@ TEXT_COLOUR = "#EAECEE"
 FONT = "Helvetica 14"
 FONT_BOLD = "Helvetica 13 bold"
 
-class ChattyBot:
+# class MenuBar(Menu):
+#     """Menubar in the ChattyBot application"""
+#     def __init__(self, window):
+#         Menu.__init__(self, window)
+
+#         file = Menu(self, tearoff=False)
+#         file.add_command(label="New")  
+#         file.add_command(label="Open")  
+#         file.add_command(label="Save")  
+#         file.add_command(label="Save as")    
+#         file.add_separator()
+#         file.add_command(label="Exit", underline=1, command=self.quit)
+#         self.add_cascade(label="File",underline=0, menu=file)
+        
+#         edit = Menu(self, tearoff=0)  
+#         edit.add_command(label="Undo")  
+#         edit.add_separator()     
+#         edit.add_command(label="Cut")  
+#         edit.add_command(label="Copy")  
+#         edit.add_command(label="Paste")  
+#         self.add_cascade(label="Edit", menu=edit) 
+
+#         help = Menu(self, tearoff=0)  
+#         help.add_command(label="About", command=self.about)  
+#         self.add_cascade(label="Help", menu=help)  
+
+#     def exit(self):
+#         self.exit
+
+#     def about(self):
+#             messagebox.showinfo('PythonGuides', 'Python Guides aims at providing best practical tutorials')
+
+class ChattyBot(Menu):
 
     def __init__(self):
-
+        
         self.window = Tk()
 
         #creates layout of window widget
         self._setup_main_window()
-        # Runs virtual environment and runs NLU server. subprocess.run waits for it to finish. ";" indicates multiple commands
-        NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
-        actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
+        # Runs virtual environment and runs NLU server. subprocess.run waits for it to finish. ";" indicates multiple commands UNCOMMENT THESE TWO WHEN TESTING/ USING
+        # NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
+        # actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
+    
+
         # subprocess.run(['NLU_server'], stdout=subprocess.PIPE, input='rasa run --enable-api')
         # # Runs actions server
         # subprocess.run(['Actions_server'], stdout=subprocess.PIPE, text=True, input='conda activate env', shell=True)
@@ -33,6 +68,7 @@ class ChattyBot:
 
         # NLU server
         self.url = "http://localhost:5005/webhooks/rest/webhook"
+
     
     def run(self):
         """Runs application"""
@@ -43,11 +79,27 @@ class ChattyBot:
         """Configures root window"""
 
         self.window.title("ChattyBot")
+            
+        # # create the file object)
+        # edit = Menu(menu)
+
+        # # adds a command to the menu option, calling it exit, and the
+        # # command it runs on event is client_exit
+        # edit.add_command(label="Undo")
+
+        # #added "file" to our menu
+        # menu.add_cascade(label="Edit", menu=edit)
+
+
+        # help = Menu(menu)
+        # help.add_cascade(label="Help", menu=help)
+
+        # send_button = Button(bottom_label, text="Send", font=FONT_BOLD, width=20, bg=BG_GREY, command=lambda: self._on_enter_pressed(None))
+        # send_button.place(relx=0.77, rely=0.008, relheight=0.06, relwidth=0.22)
         # If true, then window can be resized
         self.window.resizable(width=False, height=False)
 
-        # give widget attributes with .configure()
-        self.window.configure(width=470, height=550, bg=BG_COLOUR)
+
 
         # head label
         # pady moves label down a bit
@@ -86,6 +138,27 @@ class ChattyBot:
         # send button - calls function via lambda
         send_button = Button(bottom_label, text="Send", font=FONT_BOLD, width=20, bg=BG_GREY, command=lambda: self._on_enter_pressed(None))
         send_button.place(relx=0.77, rely=0.008, relheight=0.06, relwidth=0.22)
+
+        # Help button for main menu
+        help = Button(self.window, text="Help", font=FONT_BOLD, width=20, bg=BG_GREY)
+        help.place(relx=0.2, rely=0.9, relheight=0.06, relwidth=0.1)
+        
+        # CREATE a menu instance in the main window
+        menu = Menu(self.window, background="pink", fg="white")
+        # self.window.config(menu=menu)
+        # CREATE a settings button in menu
+        settings = Menu(menu, tearoff=0, bg=BG_GREY)
+        # ADD option under settings button
+        settings.add_command(label="Export Conversation")
+        settings.add_command(label="Exit", command=self.exitApp)
+
+        # ADD settings button to menu
+        menu.add_cascade(label="Settings", menu=settings)
+        # Create menubar by setting the color
+
+  
+        # give widget attributes with .configure()
+        self.window.configure(width=470, height=550, bg=BG_COLOUR, menu=menu)
 
     def _on_enter_pressed(self, event):
         """Retrieves message"""
@@ -131,6 +204,9 @@ class ChattyBot:
             # Always allows user to see last message sent (scrolls down)
             self.text_widget.see(END)
 
+    def exitApp(self):
+        """Exit app"""
+        exit()
 
 if __name__ == "__main__":
     app = ChattyBot()
