@@ -607,25 +607,37 @@ from tkinter import *
 #     ws.geometry('300x200')
 #     ws.mainloop()
 
-# Import the library tkinter
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from tkinter.messagebox import showinfo
 
-master = Tk()
+def popup_bonus():
+    win = tk.Toplevel()
+    win.wm_title("Window")
 
-var = StringVar(master)
-var.set("one") # initial value
+    l = tk.Label(win, text="Input")
+    l.grid(row=0, column=0)
 
-option = OptionMenu(master, var, "one", "two", "three", "four")
-option.pack()
+    b = ttk.Button(win, text="Okay", command=win.destroy)
+    b.grid(row=1, column=0)
 
-#
-# test stuff
+def popup_showinfo():
+    showinfo("Window", "Hello World!")
 
-def ok():
-    print("value is", var.get())
-    master.quit()
+class Application(ttk.Frame):
 
-button = Button(master, text="OK", command=ok)
-button.pack()
+    def __init__(self, master):
+        ttk.Frame.__init__(self, master)
+        self.pack()
 
-mainloop()
+        self.button_bonus = ttk.Button(self, text="Bonuses", command=popup_bonus)
+        self.button_bonus.pack()
+
+        self.button_showinfo = ttk.Button(self, text="Show Info", command=popup_showinfo)
+        self.button_showinfo.pack()
+
+root = tk.Tk()
+
+app = Application(root)
+
+root.mainloop()

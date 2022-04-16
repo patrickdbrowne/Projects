@@ -661,22 +661,25 @@ class ActionSearchSong(Action):
         # Get the Song Name from data
         song_name = tracker.get_latest_entity_values("song")
         searchQuery = next(song_name, None)
-        # Search for the Song.
-        searchResults = spotifyObject.search(searchQuery,1,0,"track")
-        # Get required data from JSON response.
-        tracks_dict = searchResults['tracks']
-        tracks_items = tracks_dict['items']
-        song = tracks_items[0]['external_urls']['spotify']
-        # print(json.dumps(tracks_dict, sort_keys=True, indent=4))
-        track_name = tracks_dict["items"][0]["name"]
-        artist_name = tracks_dict["items"][0]["artists"][0]["name"]
+        if searchQuery != None:
+            # Search for the Song.
+            searchResults = spotifyObject.search(searchQuery,1,0,"track")
+            # Get required data from JSON response.
+            tracks_dict = searchResults['tracks']
+            tracks_items = tracks_dict['items']
+            song = tracks_items[0]['external_urls']['spotify']
+            # print(json.dumps(tracks_dict, sort_keys=True, indent=4))
+            track_name = tracks_dict["items"][0]["name"]
+            artist_name = tracks_dict["items"][0]["artists"][0]["name"]
 
-        # Open the Song in Web Browser
-        webbrowser.open(song)
-        # Returns the song name and artist - taking into account the grammar rule for words ending in "s" and its plural
-        if artist_name[-1] == "s":
-            dispatcher.utter_message(text="How's {}' {}? Are you vibin' to it?".format(artist_name, track_name))
-        elif artist_name[-1] != "s":
-            dispatcher.utter_message(text="How's {}'s {}? Are you vibin' to it?".format(artist_name, track_name))
-        return []
-        
+            # Open the Song in Web Browser
+            webbrowser.open(song)
+            # Returns the song name and artist - taking into account the grammar rule for words ending in "s" and its plural
+            if artist_name[-1] == "s":
+                dispatcher.utter_message(text="How's {}' {}? Are you vibin' to it?".format(artist_name, track_name))
+            elif artist_name[-1] != "s":
+                dispatcher.utter_message(text="How's {}'s {}? Are you vibin' to it?".format(artist_name, track_name))
+            return []
+        else:
+            dispatcher.utter_message(text="Sorry! I don't recognise that song...")
+            return[]
