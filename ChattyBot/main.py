@@ -12,7 +12,14 @@ BG_GREY = "#ABB289"
 BG_COLOUR = "#17202A"
 TEXT_COLOUR = "#EAECEE"
 
+BG_DARK_BLUE = "#1D3557"
+BG_BLUE = "#457B9D"
+BG_LIGHT_BLUE = "#A8DADC"
+BG_WHITE = "#F1FAEE"
+BG_RED = "#E63946"
+
 FONT = "Helvetica 14"
+FONT_ENTRY = "Roboto 30"
 FONT_BOLD = "Helvetica 13 bold"
 
 # class MenuBar(Menu):
@@ -55,8 +62,8 @@ class ChattyBot(Menu):
         self.users_name = "User"
 
         # Runs virtual environment and runs NLU server. subprocess.run waits for it to finish. ";" indicates multiple commands UNCOMMENT THESE TWO WHEN TESTING/ USING
-        NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
-        actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
+        # NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
+        # actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
 
 
         # subprocess.run(['NLU_server'], stdout=subprocess.PIPE, input='rasa run --enable-api')
@@ -77,7 +84,7 @@ class ChattyBot(Menu):
         self.number = len(os.listdir(".\conversations")) + 1
         self.popup_name()
 
-    
+
     def run(self):
         """Runs application"""
 
@@ -118,12 +125,12 @@ class ChattyBot(Menu):
         # head_label.place(relwidth=1)
 
         # divider between head label and user inputs
-        line = Label(self.window, width=450, bg=BG_GREY)
+        line = Label(self.window, width=450, bg=BG_BLUE)
         line.place(relwidth=1, rely=0.07, relheight=0.012)
 
         # text widget - 20 characters wide, 2 characters high, padding
         # padding x in tupple is to stop the text sliding under the scroll bar
-        self.text_widget = Text(self.window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
+        self.text_widget = Text(self.window, width=20, height=2, bg=BG_WHITE, fg=BG_DARK_BLUE, font=FONT, padx=5, pady=5)
         self.text_widget.place(relheight=0.745, relwidth=1, rely=0.08)
         # Disable so only text can be displayed
         self.text_widget.configure(cursor="arrow", state=DISABLED)
@@ -135,19 +142,27 @@ class ChattyBot(Menu):
         scrollbar.configure(command=self.text_widget.yview)
 
         # bottom label - for entry box background
-        bottom_label = Label(self.window, bg=BG_GREY, height=80)
-        bottom_label.place(relwidth=1, rely=0.825)
+        self.bottom_label = Label(self.window, bg=BG_BLUE, height=80)
+        self.bottom_label.place(relwidth=1, rely=0.825)
 
+        # Making a frame for entry box and cursor caret type
+        entry_frame = Frame(self.bottom_label, bg=BG_DARK_BLUE, cursor="xterm")
+        entry_frame.place(relwidth=0.74, relheight=0.06, rely=0.008, relx=0.011)
+        
         # text entry box
-        self.msg_entry = Entry(bottom_label, bg="#2C3E50", fg=TEXT_COLOUR, font=FONT)
-        self.msg_entry.place(relwidth=0.74, relheight=0.06, rely=0.008, relx=0.011)
+        self.msg_entry = Entry(self.bottom_label, bg=BG_DARK_BLUE, fg=TEXT_COLOUR, font=FONT_ENTRY, borderwidth=0, insertbackground=BG_WHITE)
+        self.msg_entry.place(relwidth=0.69, relheight=0.06, rely=0.008, relx=0.03)
+
+        # Label for entry box - move cursor to the right
+        # self.entry_label = Label(self.window, bg=BG_BLUE)
+        # self.entry_label.place(relwidth=0.05, relheight=0.06, rely=0.008, relx=0)
         # automatically selected when app is opened
         self.msg_entry.focus()
         # Allows message to be sent via enter key in addition send button
         self.msg_entry.bind("<Return>", self._on_enter_pressed)
 
         # send button - calls function via lambda
-        send_button = Button(bottom_label, text="Send", font=FONT_BOLD, width=20, bg=BG_GREY, command=lambda: self._on_enter_pressed(None))
+        send_button = Button(self.bottom_label, text="Send", font=FONT_BOLD, fg=BG_WHITE, activeforeground=BG_DARK_BLUE, width=20, bg=BG_BLUE, command=lambda: self._on_enter_pressed(None))
         send_button.place(relx=0.77, rely=0.008, relheight=0.06, relwidth=0.22)
         
         # # Create value for an option in "Settings"
@@ -158,32 +173,84 @@ class ChattyBot(Menu):
         var = StringVar()
         label = Label(self.window, textvariable=var)
         # Menubutton automatically highlights when mouse hovers button, so active background makes it same colour
-        menubutton = Menubutton(self.window, text="Settings", borderwidth=1, relief="ridge", indicatoron=False, font=FONT_BOLD, bg=BG_GREY, fg="black", activebackground=BG_GREY)
-        menu = Menu(menubutton, tearoff=False)
-        menubutton.configure(menu=menu)
-        menu.add_radiobutton(label="Export Conversation", variable=var, value="Export Conversation", command=self._export_convo)
-        menu.add_radiobutton(label="Edit Joke Settings", variable=var, value="Edit Joke Settings")
-        menu.add_radiobutton(label="Edit Voice Settings", variable=var, value="Edit Voice Settings") 
-        menu.add_radiobutton(label="Exit", variable=var, value="Exit", command=self.exitApp)
+        self.menubutton = Menubutton(self.window, text="Settings", borderwidth=1, relief="ridge", indicatoron=False, font=FONT_BOLD, bg=BG_BLUE, fg=BG_WHITE, activeforeground=BG_WHITE, activebackground=BG_BLUE)
+        self.menu = Menu(self.menubutton, tearoff=False)
+        self.menubutton.configure(menu=self.menu)
+        self.menu.add_radiobutton(label="Export Conversation", variable=var, value="Export Conversation", command=self._export_convo)
+        self.menu.add_radiobutton(label="Edit Joke Settings", variable=var, value="Edit Joke Settings", command=self._joke_settings)
+        self.menu.add_radiobutton(label="Edit Voice Settings", variable=var, value="Edit Voice Settings", command=self._voice_settings)
+        self.menu.add_radiobutton(label="Exit", variable=var, value="Exit", command=self.exitApp)
 
         # label.pack(side="bottom", fill="x")
-        menubutton.place(relx=0, rely=0, relheight=0.07, relwidth=0.25)
+        self.menubutton.place(relx=0, rely=0, relheight=0.07, relwidth=0.25)
 
         # Help button for main menu
-        self.help = Button(self.window, text="Help", font=FONT_BOLD, width=20, bg=BG_GREY, borderwidth=1, relief="ridge", activebackground=BG_GREY)
+        self.help = Button(self.window, text="Help", font=FONT_BOLD, width=20, bg=BG_BLUE, fg=BG_WHITE, borderwidth=1, activeforeground=BG_WHITE, relief="ridge", activebackground=BG_BLUE, command=self._help_screen)
         self.help.place(relx=0.25, rely=0, relheight=0.07, relwidth=0.25)
 
         # Voice button for main menu
-        self.voice_button = Button(self.window, text="Voice: Off", font=FONT_BOLD, width=20, bg=BG_GREY, borderwidth=1, relief="ridge", activebackground=BG_GREY, command=self._toggle_voice)
+        self.voice_button = Button(self.window, text="Voice: Off", font=FONT_BOLD, width=20, bg=BG_BLUE, fg=BG_WHITE, activeforeground=BG_WHITE, borderwidth=1, relief="ridge", activebackground=BG_BLUE, command=self._toggle_voice)
         self.voice_button.place(relx=0.5, rely=0, relheight=0.07, relwidth=0.25)
 
         # Clear conversation button for main menu
-        self.convo_button = Button(self.window, text="Clear Conversation", font=FONT_BOLD, width=20, bg=BG_GREY, borderwidth=1, relief="ridge", activebackground=BG_GREY, command=self._clear_text)
+        self.convo_button = Button(self.window, text="Clear Conversation", font=FONT_BOLD, width=20, bg=BG_BLUE, fg=BG_WHITE, activeforeground=BG_WHITE, borderwidth=1, relief="ridge", activebackground=BG_BLUE, command=self._clear_text)
         self.convo_button.place(relx=0.75, rely=0, relheight=0.07, relwidth=0.25)
 
   
         # give widget attributes with .configure(). dimensions correspond with screen aspect ratio 4:3
         self.window.configure(width=733.33, height=550, bg=BG_COLOUR)
+
+    def _voice_settings(self):
+        """Shows voice settings to change gender of voice, voice volume, and voice rate"""
+        # Creates a window which can be destroyed
+        self.voice_settings_window = Toplevel()
+        self.voice_settings_window.wm_title("Change Voice Settings!")
+        self.voice_settings_window.resizable(width=False, height=False)
+
+        self.text_voice = Text(self.voice_settings_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
+        self.text_voice.place(relheight=0.745, relwidth=1, rely=0.08)
+        # Disable so only text can be displayed
+        self.text_voice.configure(cursor="arrow", state=DISABLED)
+
+        # Image icon on help screen in program
+        self.voice_settings_window.iconbitmap(r".\\address_book.ico")
+
+        # Disables menu button for "edit joke settings" so no more than 1 window appears
+        self.menu.entryconfig(2, state=DISABLED)
+        self.voice_settings_window.protocol("WM_DELETE_WINDOW", self._voice_settings_window_close)
+
+        self.voice_settings_window.configure(width=733.33, height=550, bg=BG_COLOUR)
+    
+    def _voice_settings_window_close(self):
+        """Enables the voice index in main menu when corresponding window closes"""
+        self.voice_settings_window.destroy()
+        self.menu.entryconfig(2, state=NORMAL)
+
+    def _joke_settings(self):
+        """Shows joke settings to change black list etc."""
+        # Creates a window which can be destroyed
+        self.jokes_setting_window = Toplevel()
+        self.jokes_setting_window.wm_title("Joke Settings!")
+        self.jokes_setting_window.resizable(width=False, height=False)
+
+        self.text_jokes = Text(self.jokes_setting_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
+        self.text_jokes.place(relheight=0.745, relwidth=1, rely=0.08)
+        # Disable so only text can be displayed
+        self.text_jokes.configure(cursor="arrow", state=DISABLED)
+
+        # Image icon on help screen in program
+        self.jokes_setting_window.iconbitmap(r".\\address_book.ico")
+
+        # Disables menu button for "edit joke settings" so no more than 1 window appears
+        self.menu.entryconfig(1, state=DISABLED)
+        self.jokes_setting_window.protocol("WM_DELETE_WINDOW", self._jokes_settings_window_close)
+
+        self.jokes_setting_window.configure(width=733.33, height=550, bg=BG_COLOUR)
+        
+    def _jokes_settings_window_close(self):
+        """Enables the jokes index in main menu when corresponding window closes"""
+        self.jokes_setting_window.destroy()
+        self.menu.entryconfig(1, state=NORMAL)
 
     def _clear_text(self):
         """Clear the conversation on screen"""
@@ -198,6 +265,36 @@ class ChattyBot(Menu):
             file.write(conversation)
 
         self.number += 1
+
+    def _help_screen(self):
+        """Displays help screen with instructions to inform user how to use program"""
+        # Creates a window which can be destroyed
+        self.help_window = Toplevel()
+        self.help_window.wm_title("How to Use ChattyBot!")
+        self.help_window.resizable(width=False, height=False)
+
+        # text widget - 20 characters wide, 2 characters high, padding
+        # padding x in tupple is to stop the text sliding under the scroll bar
+        self.text_help = Text(self.help_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
+        self.text_help.place(relheight=0.745, relwidth=1, rely=0.08)
+        # Disable so only text can be displayed
+        self.text_help.configure(cursor="arrow", state=DISABLED)
+
+        # Image icon on help screen in program
+        self.help_window.iconbitmap(r".\\address_book.ico")
+
+        self.help_window.configure(width=733.33, height=550, bg=BG_COLOUR)
+
+        # Disable help button so as to not produce more "help" screens
+        self.help.configure(state=DISABLED)
+
+        self.help_window.protocol("WM_DELETE_WINDOW", self._help_window_close)
+
+    def _help_window_close(self):
+        """ when help window closes, the help button is enabled so it can be reopened. 
+        Prevents multiple instances of the same window."""
+        self.help_window.destroy()
+        self.help.configure(state=NORMAL)
 
     def _on_enter_pressed(self, event):
         """Retrieves message"""
