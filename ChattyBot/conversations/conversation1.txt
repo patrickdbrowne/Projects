@@ -1,1 +1,10 @@
+pat: hi
+
+ChattyBot: Hey, I'm ChattyBot! Feel free to stick around for a chat, or information like: the time and weather in any city, common facts or COVID data about any country, or definition of any word...
+
+pat: joke
+
+ChattyBot: Why does Beyonce sing "to the left, to the left"?
+Because women don't have rights.
+
 

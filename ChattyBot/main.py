@@ -8,6 +8,11 @@ import os
 from tkinter import messagebox
 import pyttsx3
 
+# global so it can be accessed in the actions.py file when needed
+# global category
+# global blacklist
+
+
 BG_GREY = "#ABB289"
 BG_COLOUR = "#17202A"
 TEXT_COLOUR = "#EAECEE"
@@ -21,6 +26,7 @@ BG_RED = "#E63946"
 FONT = "Helvetica 14"
 FONT_ENTRY = "Roboto 30"
 FONT_BOLD = "Helvetica 13 bold"
+FONT_BOLD_CHECKBOX = "Helvetica 16 bold"
 
 # class MenuBar(Menu):
 #     """Menubar in the ChattyBot application"""
@@ -62,8 +68,8 @@ class ChattyBot(Menu):
         self.users_name = "User"
 
         # Runs virtual environment and runs NLU server. subprocess.run waits for it to finish. ";" indicates multiple commands UNCOMMENT THESE TWO WHEN TESTING/ USING
-        # NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
-        # actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
+        NLU_server = subprocess.Popen('rasa run --enable-api', shell=True)
+        actions_server = subprocess.Popen('cd actions && rasa run actions', shell=True)
 
 
         # subprocess.run(['NLU_server'], stdout=subprocess.PIPE, input='rasa run --enable-api')
@@ -207,11 +213,6 @@ class ChattyBot(Menu):
         self.voice_settings_window.wm_title("Change Voice Settings!")
         self.voice_settings_window.resizable(width=False, height=False)
 
-        self.text_voice = Text(self.voice_settings_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
-        self.text_voice.place(relheight=0.745, relwidth=1, rely=0.08)
-        # Disable so only text can be displayed
-        self.text_voice.configure(cursor="arrow", state=DISABLED)
-
         # Image icon on help screen in program
         self.voice_settings_window.iconbitmap(r".\\address_book.ico")
 
@@ -219,7 +220,7 @@ class ChattyBot(Menu):
         self.menu.entryconfig(2, state=DISABLED)
         self.voice_settings_window.protocol("WM_DELETE_WINDOW", self._voice_settings_window_close)
 
-        self.voice_settings_window.configure(width=733.33, height=550, bg=BG_COLOUR)
+        self.voice_settings_window.configure(width=733.33, height=550, bg=BG_WHITE)
     
     def _voice_settings_window_close(self):
         """Enables the voice index in main menu when corresponding window closes"""
@@ -233,22 +234,153 @@ class ChattyBot(Menu):
         self.jokes_setting_window.wm_title("Joke Settings!")
         self.jokes_setting_window.resizable(width=False, height=False)
 
-        self.text_jokes = Text(self.jokes_setting_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
-        self.text_jokes.place(relheight=0.745, relwidth=1, rely=0.08)
-        # Disable so only text can be displayed
-        self.text_jokes.configure(cursor="arrow", state=DISABLED)
-
         # Image icon on help screen in program
         self.jokes_setting_window.iconbitmap(r".\\address_book.ico")
+
+        self.jokes_setting_window.configure(width=733.33, height=550, bg=BG_WHITE)
+        # Blacklist subtitle
+        self.blacklist = Label(self.jokes_setting_window, text="Blacklist:", font=FONT_ENTRY, fg=BG_DARK_BLUE, bg=BG_WHITE)
+        self.blacklist.place(rely=0.05, relx=0.05)
+
+        # Categories subtitle
+        self.categories = Label(self.jokes_setting_window, text="Categories:", font=FONT_ENTRY, fg=BG_DARK_BLUE, bg=BG_WHITE)
+        self.categories.place(rely=0.05, relx=0.5)
+
+        # Making a checkbox for types of jokes the user wants - Checkboxes are in intervals of 15.833...% vertically
+
+        # BLACKLIST
+        # NSFW checkbox
+        self.nsfw_value = IntVar()
+        self.nsfw_checkbutton = Checkbutton(self.jokes_setting_window, text="NSFW", variable=self.nsfw_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.nsfw_checkbutton.place(rely=0.1857142857, relx=0.05)
+
+        # Religious checkbox
+        self.religious_value = IntVar()
+        self.religious_checkbutton = Checkbutton(self.jokes_setting_window, text="Religious", variable=self.religious_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.religious_checkbutton.place(rely=0.3214285714, relx=0.05)
+
+        # Political checkbox
+        self.political_value = IntVar()
+        self.political_checkbutton = Checkbutton(self.jokes_setting_window, text="Political", variable=self.political_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.political_checkbutton.place(rely=0.4571428571, relx=0.05)
+
+        # Racist checkbox
+        self.racist_value = IntVar()
+        self.racist_checkbutton = Checkbutton(self.jokes_setting_window, text="Racist", variable=self.racist_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.racist_checkbutton.place(rely=0.5928571429, relx=0.05)
+
+        # Sexist checkbox
+        self.sexist_value = IntVar()
+        self.sexist_checkbutton = Checkbutton(self.jokes_setting_window, text="Sexist", variable=self.sexist_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.sexist_checkbutton.place(rely=0.7285714286, relx=0.05)
+
+        # Explicit checkbox
+        self.explicit_value = IntVar()
+        self.explicit_checkbutton = Checkbutton(self.jokes_setting_window, text="Explicit", variable=self.explicit_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.explicit_checkbutton.place(rely=0.8642857143, relx=0.05)
+        
+        
+        # CATEGORIES - automatically checked
+        # Programming checkbox
+        self.programming_value = IntVar()
+        self.programming_checkbutton = Checkbutton(self.jokes_setting_window, text="Programming", variable=self.programming_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.programming_checkbutton.place(rely=0.1857142857, relx=0.5)
+
+        # Miscellaneous checkbox
+        self.miscellaneous_value = IntVar()
+        self.miscellaneous_checkbutton = Checkbutton(self.jokes_setting_window, text="Miscellaneous", variable=self.miscellaneous_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.miscellaneous_checkbutton.place(rely=0.3214285714, relx=0.5)
+
+        # Pun checkbox
+        self.pun_value = IntVar()
+        self.pun_checkbutton = Checkbutton(self.jokes_setting_window, text="Pun", variable=self.pun_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.pun_checkbutton.place(rely=0.4571428571, relx=0.5)
+
+        # Spooky checkbox
+        self.spooky_value = IntVar()
+        self.spooky_checkbutton = Checkbutton(self.jokes_setting_window, text="Spooky", variable=self.spooky_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.spooky_checkbutton.place(rely=0.5928571429, relx=0.5)
+
+        # Christmas
+        self.christmas_value = IntVar()
+        self.christmas_checkbutton = Checkbutton(self.jokes_setting_window, text="Christmas", variable=self.christmas_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.christmas_checkbutton.place(rely=0.7285714286, relx=0.5)
+
+        # Dark checkbox
+        self.dark_value = IntVar()
+        self.dark_checkbutton = Checkbutton(self.jokes_setting_window, text="Dark", variable=self.dark_value, onvalue=0, offvalue=1, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.dark_checkbutton.place(rely=0.8642857143, relx=0.5)
+        self.dark_checkbutton.toggle()
 
         # Disables menu button for "edit joke settings" so no more than 1 window appears
         self.menu.entryconfig(1, state=DISABLED)
         self.jokes_setting_window.protocol("WM_DELETE_WINDOW", self._jokes_settings_window_close)
-
-        self.jokes_setting_window.configure(width=733.33, height=550, bg=BG_COLOUR)
         
+        # self.blacklist_choices = ("nsfw", "religious", "political", "racist", "sexist", "explicit") <-- CASE SENSITIVE
+        # self.category_choices = ("Programming", "Miscellaneous", "Pun", "Spooky", "Christmas")
+
     def _jokes_settings_window_close(self):
         """Enables the jokes index in main menu when corresponding window closes"""
+        global category
+        global blacklist
+        # Checks the value of each checkbox and sends it to the jokes class in actions.py - updates blacklist and categories in jokes
+        # default values
+        category = ["Programming,Miscellaneous,Pun,Spooky,Christmas"]
+        blacklist = ["nsfw,religious,political,racist,sexist,explicit"]
+        # Create category list to post to jokes api as necessary
+        category_copy = ""
+        blacklist_copy = ""
+
+        # Adds word to list if it's in string and turned off
+        if self.programming_value.get() == 0:
+            category_copy += "Programming," # Remove "Programming," etc.
+        if self.dark_value.get() == 0:
+            category_copy += "Dark,"
+        if self.miscellaneous_value.get() == 0:
+            category_copy += "Miscellaneous,"
+        if self.pun_value.get() == 0:
+            category_copy += "Pun,"
+        if self.spooky_value.get() == 0:
+            category_copy += "Spooky,"
+        if self.christmas_value.get() == 0:
+            category_copy += "Christmas"
+        if len(category_copy) > 0:
+            if category_copy[-1] == ",":
+                category_copy = category_copy[:-1]
+        
+        # Adds word to list if it is on
+        # Create blacklist list to post to jokes api as needed
+        if self.nsfw_value.get() == 0:
+            blacklist_copy += "nsfw,"
+        if self.religious_value.get() == 0:
+            blacklist_copy += "religious,"
+        if self.political_value.get() == 0:
+            blacklist_copy += "political,"
+        if self.racist_value.get() == 0:
+            blacklist_copy += "racist,"
+        if self.sexist_value.get() == 0:
+            blacklist_copy += "sexist,"
+        if self.explicit_value.get() == 0:
+            blacklist_copy += "explicit"
+        if len(blacklist_copy) > 0:
+            if blacklist_copy[-1] == ",":
+                blacklist_copy = blacklist_copy[:-1]
+        
+        # Changing global variables
+        blacklist.append(blacklist_copy)
+        blacklist.pop(0)
+
+        category.append(category_copy)
+        category.pop(0)
+
+        action_blacklist = blacklist
+        action_category = category
+
+        print(action_blacklist)
+        print(action_category)
+
+        # print(blacklist, category)
+
         self.jokes_setting_window.destroy()
         self.menu.entryconfig(1, state=NORMAL)
 
@@ -273,17 +405,10 @@ class ChattyBot(Menu):
         self.help_window.wm_title("How to Use ChattyBot!")
         self.help_window.resizable(width=False, height=False)
 
-        # text widget - 20 characters wide, 2 characters high, padding
-        # padding x in tupple is to stop the text sliding under the scroll bar
-        self.text_help = Text(self.help_window, width=20, height=2, bg=BG_COLOUR, fg=TEXT_COLOUR, font=FONT, padx=5, pady=5)
-        self.text_help.place(relheight=0.745, relwidth=1, rely=0.08)
-        # Disable so only text can be displayed
-        self.text_help.configure(cursor="arrow", state=DISABLED)
-
         # Image icon on help screen in program
         self.help_window.iconbitmap(r".\\address_book.ico")
 
-        self.help_window.configure(width=733.33, height=550, bg=BG_COLOUR)
+        self.help_window.configure(width=733.33, height=550, bg=BG_WHITE)
 
         # Disable help button so as to not produce more "help" screens
         self.help.configure(state=DISABLED)
@@ -389,6 +514,8 @@ class ChattyBot(Menu):
     def exitApp(self):
         """Exit app"""
         exit()
+
+
 
 if __name__ == "__main__":   
     app = ChattyBot()

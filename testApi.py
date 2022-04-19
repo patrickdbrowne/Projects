@@ -607,37 +607,42 @@ from tkinter import *
 #     ws.geometry('300x200')
 #     ws.mainloop()
 
-import tkinter as tk
-from tkinter import ttk
-from tkinter.messagebox import showinfo
+# import tkinter as tk
+# from tkinter import ttk
+# from tkinter.messagebox import showinfo
 
-def popup_bonus():
-    win = tk.Toplevel()
-    win.wm_title("Window")
+# def popup_bonus():
+#     win = tk.Toplevel()
+#     win.wm_title("Window")
 
-    l = tk.Label(win, text="Input")
-    l.grid(row=0, column=0)
+#     l = tk.Label(win, text="Input")
+#     l.grid(row=0, column=0)
 
-    b = ttk.Button(win, text="Okay", command=win.destroy)
-    b.grid(row=1, column=0)
+#     b = ttk.Button(win, text="Okay", command=win.destroy)
+#     b.grid(row=1, column=0)
 
-def popup_showinfo():
-    showinfo("Window", "Hello World!")
+# def popup_showinfo():
+#     showinfo("Window", "Hello World!")
 
-class Application(ttk.Frame):
+# class Application(ttk.Frame):
 
-    def __init__(self, master):
-        ttk.Frame.__init__(self, master)
-        self.pack()
+#     def __init__(self, master):
+#         ttk.Frame.__init__(self, master)
+#         self.pack()
 
-        self.button_bonus = ttk.Button(self, text="Bonuses", command=popup_bonus)
-        self.button_bonus.pack()
+#         self.button_bonus = ttk.Button(self, text="Bonuses", command=popup_bonus)
+#         self.button_bonus.pack()
 
-        self.button_showinfo = ttk.Button(self, text="Show Info", command=popup_showinfo)
-        self.button_showinfo.pack()
+#         self.button_showinfo = ttk.Button(self, text="Show Info", command=popup_showinfo)
+#         self.button_showinfo.pack()
 
-root = tk.Tk()
+# root = tk.Tk()
 
-app = Application(root)
+# app = Application(root)
 
-root.mainloop()
+# root.mainloop()
+
+from testGlobal import blacklist
+from testGlobal import category
+
+print(blacklist, "            ", category)

@@ -5,6 +5,7 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 from typing import Any, Text, Dict, List
+from unicodedata import category
 
 import requests
 import json
@@ -18,6 +19,9 @@ from rasa_sdk.executor import CollectingDispatcher
 
 import spotipy
 import webbrowser
+
+import sys
+import os
 
 class ActionShowTimeZone(Action):
     """Returns the time in another place"""
@@ -431,39 +435,49 @@ class ActionShowJoke(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         try: 
-            # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
-            category = "Programming,Miscellaneous,Pun,Spooky,Christmas"
-            blackList = "nsfw,religious,political,racist,sexist,explicit"
+            # Adds directory that main.py is in to Path
+            SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+            sys.path.append(os.path.dirname(SCRIPT_DIR))
 
+            # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
+            # Accesses the values created in the GUI
+            import main
             # In GUI, if explicit is on, then
             # blackList = ""
             # category = [options entered]
             # --Shows warning that it could be offensive to the audience--
+            blacklist = main.blacklist
+            category = main.category
+            print(blacklist)
+            print(category)
 
-            # Adjusts request if blackList is empty or not
-            if blackList == "":
-                request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category))
-            elif blackList != "":
-                request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category, blackList))
-
+            # Adjusts request if self.blacklist is empty or not
+            if blacklist[0] == "":
+                request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category[0]))
+            if blacklist[0] != "":
+                request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category[0], blacklist[0]))
+            print(blacklist, blacklist[0])
+            print(category, category[0])
+            print(request_jokes.json())            
             # In case API doesn't respond properly
             if request_jokes.status_code != 200:
                 dispatcher.utter_message(text="Oops! Something has gone wrong with our Jokes API. Why don't you try something else in the meantime?")
                 return []
-            
+
             # Adjusts output depending if there is one or two parts to a joke
-            elif request_jokes.json()['type'] == 'twopart':
+            if request_jokes.json()['type'] == 'twopart':
                 setup = request_jokes.json()['setup']
                 delivery = request_jokes.json()['delivery']
                 dispatcher.utter_message(text="{}\n{}".format(setup, delivery))
                 return []
 
-            elif request_jokes.json()['type'] == 'single':
+            if request_jokes.json()['type'] == 'single':
                 joke = request_jokes.json()['joke']
                 dispatcher.utter_message(text=joke)
                 return []
+
         except:
-            dispatcher.utter_message(text="Oh no! It looks like something unexpected happened!")
+            dispatcher.utter_message(text="Oh no! It looks like something unexpected happened! Please make sure to have at least 1 category for your jokes!")
             return []
 
 class ActionShowTrivia(Action):
