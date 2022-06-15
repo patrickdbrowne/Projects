@@ -1,0 +1,204 @@
+Patrick: hello
+
+ChattyBot: Hey, I'm ChattyBot! Feel free to stick around for a chat, or information like: the time and weather in any city, common facts or COVID data about any country, or definition of any word...
+
+Patrick: what is the time in america?
+
+ChattyBot: Great! I need a moment to get the time zone of america for you...
+
+ChattyBot: The time in America\/Adak is 03:21.
+
+Patrick: time in Prague
+
+ChattyBot: Great! I need a moment to get the time zone of Prague for you...
+
+ChattyBot: The time in Prague is 14:21
+
+Patrick: What is the time?
+
+ChattyBot: Which city's time zone do you want to know about?
+
+Patrick: Sydney
+
+ChattyBot: Great! I need a moment to get the time zone of Sydney for you...
+
+ChattyBot: The time in Sydney is 22:22
+
+Patrick: time
+
+ChattyBot: Which city's time zone do you want to know about?
+
+Patrick: africa
+
+ChattyBot: Great! I need a moment to get the time zone of africa for you...
+
+ChattyBot: The time in Africa\/Abidjan is 12:22.
+
+Patrick: Is it hot in Djibouti?
+
+ChattyBot: Sure, finding the weather for you...
+
+ChattyBot: The weather in Djibouti is sunny:
+                        - wind: 15.5 km\/h
+                        - precipitation: 0.0 mm
+                        - humidity: 34
+                        - average temperature: 38.1°C
+
+Patrick: weather in Korea
+
+ChattyBot: Sure, finding the weather for you...
+
+ChattyBot: The weather in Seoul, Korea is clear:
+                        - wind: 6.1 km\/h
+                        - precipitation: 0.0 mm
+                        - humidity: 69
+                        - average temperature: 21.0°C
+
+Patrick: define "move"
+
+ChattyBot: What a Scholar! Let me find the definition of None for you...
+
+ChattyBot: The most common definition of move is The act of moving; a movement. For example, A slight move of the tiller, and the boat will go off course.
+
+Patrick: definition of "keyboard"
+
+ChattyBot: What a Scholar! Let me find the definition of None for you...
+
+ChattyBot: The most common definition of keyboard is (etc.) A set of keys used to operate a typewriter, computer etc. I can't seem to find any examples of this word being used in a sentence...
+
+Patrick: what does "bolala" mean?
+
+ChattyBot: What a Scholar! Let me find the definition of None for you...
+
+ChattyBot: You did not enter a valid word there... or the backend is acting up.
+
+Patrick: What is nepal's currency?
+
+ChattyBot: Ok! Finding out about Korea for you...
+
+ChattyBot: Oh no! We can't find any info on None. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: what is Nepal's currency?
+
+ChattyBot: Ok! Finding out about Korea for you...
+
+ChattyBot: Oh no! We can't find any info on None. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: what is Nepal currency
+
+ChattyBot: Ok! Finding out about Korea for you...
+
+ChattyBot: Oh no! We can't find any info on None. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: what is Nepal like?
+
+ChattyBot: Ok! Finding out about Korea for you...
+
+ChattyBot: Oh no! We can't find any info on None. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: what is the population of America?
+
+ChattyBot: Ok! Finding out about America for you...
+
+ChattyBot: America, or officially known as United States of America, is in the region Americas and in the continent North America. America's currency is the United States dollar ($ USD). Not only that, but did you know there are 329484123 Americans living there at the moment?! Additionally, America's Capital is Washington, D.C. with the main language being English. And even though we can't travel there because of COVID, what's stopping us from digitally visiting there with google? https:\/\/goo.gl\/maps\/e8M246zY4BSjkjAv6.
+
+Patrick: what is Perth like?
+
+ChattyBot: Ok! Finding out about Perth for you...
+
+ChattyBot: Oh no! We can't find any info on Perth. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: what's Perth like?
+
+ChattyBot: Ok! Finding out about Perth for you...
+
+ChattyBot: Oh no! We can't find any info on Perth. Have you checked the spelling or made sure you've asked about a country?
+
+Patrick: meaning of life?
+
+ChattyBot: 42
+
+Patrick: how many covid cases are there?
+
+ChattyBot: Of course! Finding COVID data for you...
+
+ChattyBot: Today, there were 559128 confirmed cases globally! In total, there are 523405480 cases, 6270727 deaths, and 0 recoveries in the world. 
+This data was last updated on 22 May, 2022.
+
+Patrick: how many cases in Germany?
+
+ChattyBot: Of course! Finding COVID data for you...
+
+ChattyBot: In Germany, there were 42375 cases today! So far, there are 26040460 cases, 138324 deaths, and 0 recoveries in Germany. This data was last updated on 22 May, 2022
+
+Patrick: tell me a joke
+
+ChattyBot: Oh no! It looks like something unexpected happened! Please make sure to have at least 1 category for your jokes!
+
+Patrick: joke
+
+ChattyBot: Oh no! It looks like something unexpected happened! Please make sure to have at least 1 category for your jokes!
+
+Patrick: funny
+
+ChattyBot: Oh no! It looks like something unexpected happened! Please make sure to have at least 1 category for your jokes!
+
+Patrick: trivia
+
+ChattyBot: Here's some film trivia for you: In Big Hero 6, what were Baymax's motions modeled after?
+A. Baby penguins
+B. Baby monkeys
+C. Baby ostriches
+D. Baby bears
+        
+Is the answer A, B, C, or D?
+
+Patrick: C
+
+ChattyBot: Unlucky that's wrong... The correct answer is Baby penguins
+
+Patrick: more trivia!
+
+ChattyBot: Here's some japanese anime & manga trivia for you: Which person from "JoJo's Bizarre Adventure" does NOT house a reference to a band, artist, or song earlier than 1980?
+A. Giorno Giovanna
+B. Josuke Higashikata
+C. Jolyne Cujoh
+D. Johnny Joestar
+        
+Is the answer A, B, C, or D?
+
+Patrick: D
+
+ChattyBot: Unlucky that's wrong... The correct answer is Giorno Giovanna
+
+Patrick: Pink Floyd
+
+ChattyBot: Great! I need a moment to get the time zone of Pink Floyd for you...
+
+ChattyBot: Sorry! Looks like I can't find the time in Pink Floyd. Want to try again?
+
+Patrick: link https://open.spotify.com/artist/0k17h0D3J5VfsdmQ1iZtE9?si=SHZTrr_oS--JM1ptNmErCA
+
+ChattyBot: Pink Floyd is known for its album rock music. This is one of my personal favourites! Here are some albums you may want to check out:
+
+ChattyBot: The Final Cut (2011 Remastered Version)
+The Wall
+Animals
+Wish You Were Here
+The Dark Side of the Moon
+Obscured by Clouds
+Meddle
+Atom Heart Mother
+Ummagumma (2011 Remastered Version)
+More
+A Saucerful of Secrets
+The Piper at the Gates of Dawn
+The Piper At The Gates Of Dawn [2011 - Remaster] (2011 Remastered Version)
+
+Patrick: Play Stop Crying Your Heart Out
+
+ChattyBot: You are signed in as pat with the username patrickdbrowne
+
+ChattyBot: How's Oasis' Stop Crying Your Heart Out? Are you vibin' to it?
+
+

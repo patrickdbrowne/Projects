@@ -36,6 +36,7 @@ entities:
   - city
   - define_word
   - user_trivia_response
+  - song
 
 slots:
   city:

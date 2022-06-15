@@ -193,7 +193,18 @@ nlu:
 - intent: search_music
   examples: |
     - play [time](song)
-    - Play some [Pigs (three different ones)](song)
+    - play [Echoes](song)
+    - play [I'm not in love](song)
+    - play [cocaine](song)
+    - play [Wind Of Change](song)
+    - play [Tranz](song)
+    - play [The Chain](song)
+    - play [Message Man](song)
+    - play [Lane Boy](song)
+    - play [Hey Jude](song)
+    - play [Angie](song)
+    - play [Believe Me](song)
+    - Play [Pigs (three different ones)](song)
     - can you play [Hurricane](song)?
     - search for [Don't Look Back in Anger - Remastered](song)
     - search [Stand by Me](song)

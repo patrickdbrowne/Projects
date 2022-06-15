@@ -391,7 +391,6 @@
 # # print("---------------------")
 # # print()
 # # Created an account on spotify to get a client id and client secret
-
 # import requests
 
 # # My spotify credentials for this project

@@ -23,6 +23,8 @@ import webbrowser
 import sys
 import os
 
+import ast
+
 class ActionShowTimeZone(Action):
     """Returns the time in another place"""
 
@@ -436,28 +438,33 @@ class ActionShowJoke(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         try: 
             # Adds directory that main.py is in to Path
-            SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-            sys.path.append(os.path.dirname(SCRIPT_DIR))
+            # SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+            # sys.path.append(os.path.dirname(SCRIPT_DIR))
 
             # Valid categories are: Any, Misc, Programming, Dark, Pun, spooky, christmas. Default settings:
             # Accesses the values created in the GUI
-            import main
+            # from main import app
+
             # In GUI, if explicit is on, then
             # blackList = ""
             # category = [options entered]
             # --Shows warning that it could be offensive to the audience--
-            blacklist = main.blacklist
-            category = main.category
-            print(blacklist)
-            print(category)
+            # access settings jokes
+            with open("stupid_settings_jokes.txt", "r") as file:
+                lines = file.readlines()
+                lines = [line.rstrip() for line in lines]
+                print(lines[0], lines[1])
+                category = ast.literal_eval(lines[0])
+                blacklist = ast.literal_eval(lines[1])
+            #     print(category)
+            # blacklist = app._return_jokes_settings_blacklist()
+            # category = app._return_jokes_settings_category()
 
             # Adjusts request if self.blacklist is empty or not
             if blacklist[0] == "":
                 request_jokes = requests.get("https://v2.jokeapi.dev/joke/{}".format(category[0]))
             if blacklist[0] != "":
                 request_jokes =  requests.get("https://v2.jokeapi.dev/joke/{}?blacklistFlags={}".format(category[0], blacklist[0]))
-            print(blacklist, blacklist[0])
-            print(category, category[0])
             print(request_jokes.json())            
             # In case API doesn't respond properly
             if request_jokes.status_code != 200:
@@ -672,9 +679,14 @@ class ActionSearchSong(Action):
         username = user["id"]
         dispatcher.utter_message(text="You are signed in as {} with the username {}".format(display_name, username))
 
-        # Get the Song Name from data
-        song_name = tracker.get_latest_entity_values("song")
-        searchQuery = next(song_name, None)
+        # # Get the Song Name from data
+        # song_name = tracker.get_latest_entity_values("song")
+        message_new = tracker.latest_message.get("text")
+        print(message_new)
+        # Keyword "play " will be removed
+        searchQuery = message_new[5:]
+
+        # searchQuery = next(song_name, None)
         if searchQuery != None:
             # Search for the Song.
             searchResults = spotifyObject.search(searchQuery,1,0,"track")

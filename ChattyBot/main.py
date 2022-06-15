@@ -7,11 +7,16 @@ import subprocess
 import os
 from tkinter import messagebox
 import pyttsx3
-
+from pathlib import Path
+# from tkinter.tix import *
 # global so it can be accessed in the actions.py file when needed
 # global category
 # global blacklist
 
+location = Path('actions\\stupid_settings_jokes.txt')
+
+engine = pyttsx3.init()
+# print(location)
 
 BG_GREY = "#ABB289"
 BG_COLOUR = "#17202A"
@@ -26,6 +31,8 @@ BG_RED = "#E63946"
 FONT = "Helvetica 14"
 FONT_ENTRY = "Roboto 30"
 FONT_BOLD = "Helvetica 13 bold"
+FONT_BOLD_SEND = "Helvetica 25 bold"
+FONT_BOLD_HEADING = "Helvetica 30 bold"
 FONT_BOLD_CHECKBOX = "Helvetica 16 bold"
 
 # class MenuBar(Menu):
@@ -79,17 +86,20 @@ class ChattyBot(Menu):
         # subprocess.run(['Actions_server'], stdout=subprocess.PIPE, text=True, input='rasa run actions', shell=True)
 
         # Runs virtual environment and actions server
+        self.gender_engine_number = 0
 
         # NLU server
         self.url = "http://localhost:5005/webhooks/rest/webhook"
         
         self.engine = pyttsx3.init()
         self.voice = False
+        self.rate_value = 200
+        self.volume_value = 1.0
+        self.opened_settings = False
 
         # Number of files in the "conversations" directory to keep track of conversations
         self.number = len(os.listdir(".\conversations")) + 1
         self.popup_name()
-
 
     def run(self):
         """Runs application"""
@@ -137,13 +147,17 @@ class ChattyBot(Menu):
         # text widget - 20 characters wide, 2 characters high, padding
         # padding x in tupple is to stop the text sliding under the scroll bar
         self.text_widget = Text(self.window, width=20, height=2, bg=BG_WHITE, fg=BG_DARK_BLUE, font=FONT, padx=5, pady=5)
-        self.text_widget.place(relheight=0.745, relwidth=1, rely=0.08)
+        self.text_widget.place(relheight=0.745, relwidth=0.974, rely=0.08)
         # Disable so only text can be displayed
         self.text_widget.configure(cursor="arrow", state=DISABLED)
 
+        # Different "container" for the scroll bar so text doesn't go behind it
+        self.scroll_widget = Frame(self.window, bg=BG_WHITE)
+        self.scroll_widget.place(relheight=0.745, relwidth=0.026, relx=0.974, rely=0.081)
+
         # scroll bar - only for text widget
-        scrollbar = Scrollbar(self.text_widget)
-        scrollbar.place(relheight=1, relx=0.974)
+        scrollbar = Scrollbar(self.scroll_widget)
+        scrollbar.place(relheight=1)
         # command changes y-position of widget to view more
         scrollbar.configure(command=self.text_widget.yview)
 
@@ -168,7 +182,7 @@ class ChattyBot(Menu):
         self.msg_entry.bind("<Return>", self._on_enter_pressed)
 
         # send button - calls function via lambda
-        send_button = Button(self.bottom_label, text="Send", font=FONT_BOLD, fg=BG_WHITE, activeforeground=BG_DARK_BLUE, width=20, bg=BG_BLUE, command=lambda: self._on_enter_pressed(None))
+        send_button = Button(self.bottom_label, text="Send", font=FONT_BOLD_SEND, fg=BG_WHITE, activeforeground=BG_DARK_BLUE, width=20, bg=BG_BLUE, command=lambda: self._on_enter_pressed(None))
         send_button.place(relx=0.77, rely=0.008, relheight=0.06, relwidth=0.22)
         
         # # Create value for an option in "Settings"
@@ -213,8 +227,37 @@ class ChattyBot(Menu):
         self.voice_settings_window.wm_title("Change Voice Settings!")
         self.voice_settings_window.resizable(width=False, height=False)
 
-        # Image icon on help screen in program
-        self.voice_settings_window.iconbitmap(r".\\address_book.ico")
+        # Image icon on help screen in program - subtlety at its finest.
+        self.voice_settings_window.iconbitmap(r".\\duck.ico")
+
+        # Rate of voice heading
+        self.rate = Label(self.voice_settings_window, text="Rate of Voice:", font=FONT_ENTRY, fg=BG_DARK_BLUE, bg=BG_WHITE)
+        self.rate.place(rely=0.05, relx=0.05)
+        # Creating a slider for rate of voice
+        self.rate_slider = Scale(self.voice_settings_window, from_=0, to=400, resolution=2, orient="horizontal", length=500, showvalue=0, troughcolor=BG_BLUE, bg=BG_WHITE, bd=0, width=30, relief=FLAT, highlightbackground=BG_WHITE, activebackground=BG_WHITE)
+        self.rate_slider.place(rely=0.15, relx=0.05)
+        self.rate_slider.set(200)
+
+        # Volume of voice heading
+        self.volume = Label(self.voice_settings_window, text="Volume of Voice:", font=FONT_ENTRY, fg=BG_DARK_BLUE, bg=BG_WHITE)
+        self.volume.place(rely=0.25, relx=0.05)
+        # Creating a slider for volume of voice
+        self.volume_slider = Scale(self.voice_settings_window, from_=0, to=1, resolution=0.01, orient="horizontal", length=500, showvalue=0, troughcolor=BG_BLUE, bg=BG_WHITE, bd=0, width=30, relief=FLAT, highlightbackground=BG_WHITE, activebackground=BG_WHITE)
+        self.volume_slider.place(rely=0.35, relx=0.05)
+        self.volume_slider.set(1)
+
+        # changing gender of voice (male or female)
+        self.gender_value = StringVar(self.voice_settings_window, "1")
+
+        self.gender = Label(self.voice_settings_window, text="Gender of Voice:", font=FONT_ENTRY, fg=BG_DARK_BLUE, bg=BG_WHITE)
+        self.gender.place(rely=0.45, relx=0.05)
+        # Creating checkboxes for male and female options
+        # Male
+        self.male_checkbutton = Radiobutton(self.voice_settings_window, text="Male", value="1", variable=self.gender_value, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.male_checkbutton.place(rely=0.55, relx=0.05)
+        # Female
+        self.female_checkbutton = Radiobutton(self.voice_settings_window, text="Female", value="2", variable=self.gender_value, fg=BG_DARK_BLUE, bg=BG_WHITE, activeforeground=BG_DARK_BLUE, activebackground=BG_WHITE, padx=5, font=FONT_BOLD_CHECKBOX)
+        self.female_checkbutton.place(rely=0.6, relx=0.05)
 
         # Disables menu button for "edit joke settings" so no more than 1 window appears
         self.menu.entryconfig(2, state=DISABLED)
@@ -224,6 +267,10 @@ class ChattyBot(Menu):
     
     def _voice_settings_window_close(self):
         """Enables the voice index in main menu when corresponding window closes"""
+        self.volume_value = self.volume_slider.get()
+        self.rate_value = self.rate_slider.get()
+        self.opened_settings = True
+        
         self.voice_settings_window.destroy()
         self.menu.entryconfig(2, state=NORMAL)
 
@@ -321,12 +368,19 @@ class ChattyBot(Menu):
 
     def _jokes_settings_window_close(self):
         """Enables the jokes index in main menu when corresponding window closes"""
-        global category
-        global blacklist
+        # global category
+        # global blacklist
         # Checks the value of each checkbox and sends it to the jokes class in actions.py - updates blacklist and categories in jokes
         # default values
-        category = ["Programming,Miscellaneous,Pun,Spooky,Christmas"]
-        blacklist = ["nsfw,religious,political,racist,sexist,explicit"]
+
+        #getting settings contents
+        with open(location, "r") as file:
+            lines = file.readlines()
+            lines = [line.rstrip() for line in lines]
+            category = ast.literal_eval(lines[0])
+            blacklist = ast.literal_eval(lines[1])
+            # print(category)
+
         # Create category list to post to jokes api as necessary
         category_copy = ""
         blacklist_copy = ""
@@ -373,11 +427,15 @@ class ChattyBot(Menu):
         category.append(category_copy)
         category.pop(0)
 
+        # Deleting settings contents, then updating it
+        with open(location, "w") as file:
+            file.write("{}\n{}".format(category, blacklist))
+
         action_blacklist = blacklist
         action_category = category
 
-        print(action_blacklist)
-        print(action_category)
+        # print(action_blacklist)
+        # print(action_category)
 
         # print(blacklist, category)
 
@@ -412,6 +470,65 @@ class ChattyBot(Menu):
 
         # Disable help button so as to not produce more "help" screens
         self.help.configure(state=DISABLED)
+
+        # SCROLLBAR - using Canvas :)
+        self.container = Frame(self.help_window, bg=BG_WHITE)
+        canvas = Canvas(self.container, bg=BG_WHITE)
+        scrollbar = Scrollbar(self.container, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = Frame(canvas, bg=BG_WHITE)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        self.container.place(relx=0, rely=0, width=733.33, height=550)
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # CUSTOMISE LABELS + TEXT ON HELP PAGE
+        # Heading
+        self.heading = Label(self.scrollable_frame, font=FONT_BOLD_HEADING, fg=BG_DARK_BLUE, bg=BG_WHITE, text="How to use ChattyBot!").pack()
+        # self.heading.place(relx=0.05, rely=0.05)
+
+        # Phrases text
+        self.phrase = Label(self.scrollable_frame, font=FONT_BOLD_CHECKBOX, fg=BG_DARK_BLUE, bg=BG_WHITE,
+        text="""Speak about any of these topics with ChattyBot and hit 'Enter' or\nthe Send Button:
+o The time in any city! - "What's the time in Prague?"
+o The time according to your IP address - "What time is it?"
+o The weather in any place - "Is it cold in Djibouti?"
+o Any definition - "Define "move"" (Use the quotes!)
+o Country facts and demographics - "What is Nepal's currency?"
+o The meaning of life
+o COVID data anywhere in the world - "How many covid cases are in
+   Hawaii?"
+o Jokes - "Tell me a joke NOW"
+o Trivia - "Trivia"
+o Play any song - "play The Temple Of The King" (use the keyword 
+   "play"!)
+o Music metadata through the artist's spotify link - "Link:"
+
+Click the "Settings" button to:
+o Export the current conversation, which is found in the folder
+   "conversations"
+o Edit the Joke Settings to change the categories and blacklist
+   for jokes
+o Edit Voice Settings
+o Exit the application
+
+Hit the "Voice: Off" button to toggle the AI's voice in responses.
+
+Hit the "Clear Conversation" button to erase your conversation with
+the AI and start over!
+
+If you have any suggestions, email patbrowne974@gmail.com or visit
+my github: github.com\patrickdbrowne
+        """,
+        justify='left').pack()
+        # self.phrase.place(relx=0.05, rely=0.15)
 
         self.help_window.protocol("WM_DELETE_WINDOW", self._help_window_close)
 
@@ -467,11 +584,26 @@ class ChattyBot(Menu):
 
         # Orates the bot's message if the voice button is turned on
         if self.voice:
+            if self.opened_settings:
+                # Get value from sliders and incorporates it. Changes gender of voice, too.
+                engine.setProperty("rate", self.rate_value)
+                engine.setProperty("volume", self.volume_value)
+                # If voice is turned on before settings, it will ignore the "self.gender_value.get()" which hasn't been defined (avoids much pain)
+                # sets gender to corresponding number in pyttsx3
+                if self.gender_value.get() == "1":
+                    self.gender_engine_number = 0
+                if self.gender_value.get() == "2":
+                    self.gender_engine_number = 1
+                engine.setProperty("voice", engine.getProperty("voices")[self.gender_engine_number].id)
+
             self.engine.say(bot_response)
             self.engine.runAndWait()
 
     def _toggle_voice(self):
         """Toggles the voice in the chatbot and text in button"""
+        # print(self.volume_value)
+        # print(self.rate_value)
+        # print(self.gender_value.get())
         if self.voice:
             self.voice_button.config(text="Voice: Off")
             self.voice = False
