@@ -1,6 +1,6 @@
 # Projects
 
-There are 4 working projects at the moment:
+There are 5 working projects at the moment:
 - Blockchain Product Creator. (can be found at ".\Blockchain_Development\Projects") <br>
 - ChattyBot (can be found at ".\ChattyBot")<br>
 - Minewalker (can be found at ".\Minewalker").<br>
