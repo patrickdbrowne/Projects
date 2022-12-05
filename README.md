@@ -10,9 +10,9 @@ There are 4 working projects at the moment:
 ## Blockchain Product Creator
 This is an application completed with the aid of a project tutorial, in addition to my own
 enhancements, that deploys a smart contract on the blockchain. This program:<br>
-a. Creates products, characterised by a price and name;<br>
-b. Gives a unique wallet address to pay for the products; and<br>
-c. Informs the user when the product has been paid, via MetaMask or otherwise.<br>
+- Creates products, characterised by a price and name;<br>
+- Gives a unique wallet address to pay for the products; and<br>
+- Informs the user when the product has been paid, via MetaMask or otherwise.<br></br>
 This kind of program can be used, say, between a business, who creates a product with its price to
 generate a secure wallet address, and a client, who will pay the appropriate amount of ETH to that
 wallet address using Metamask. If the smart contract deems the transaction to be successful, an event
